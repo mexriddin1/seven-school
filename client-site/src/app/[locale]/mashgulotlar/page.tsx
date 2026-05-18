@@ -71,10 +71,8 @@ export default async function MashPage({ params }: { params: { locale: string } 
                 <h3>{s['mash.stg1_title'] || "Bog'cha"}</h3>
                 <p>{s['mash.stg1_lead'] || "Maktabga to'liq tayyorgarlik: o'qish, yozish, sanoq va ingliz tili. Har bir guruhda 18–22 bola, kun bo'yi ta'lim."}</p>
                 <ul>
-                  <li>Gimnastika va taekvondo</li>
-                  <li>Mental arifmetika</li>
-                  <li>Kulolchilik va rasm</li>
-                  <li>Mutolaa darslari</li>
+                  {(s['mash.stg1_items'] || 'Gimnastika va taekvondo|Mental arifmetika|Kulolchilik va rasm|Mutolaa darslari')
+                    .split('|').map((it: string, i: number) => <li key={i}>{it.trim()}</li>)}
                 </ul>
               </div>
             </div>
@@ -85,10 +83,8 @@ export default async function MashPage({ params }: { params: { locale: string } 
                 <h3>{s['mash.stg2_title'] || 'Maktab'}</h3>
                 <p>{s['mash.stg2_lead'] || 'Akademik fanlar, STEM, AI va liderlik darslari birgalikda. Kichik sinflar, 7-sinfgacha davom etadi.'}</p>
                 <ul>
-                  <li>Matematika, ingliz tili, fanlar</li>
-                  <li>STEM amaliyot — Muhandis D</li>
-                  <li>AI vositalar (5–7-sinf)</li>
-                  <li>Tanqidiy fikrlash va liderlik</li>
+                  {(s['mash.stg2_items'] || 'Matematika, ingliz tili, fanlar|STEM amaliyot — Muhandis D|AI vositalar (5–7-sinf)|Tanqidiy fikrlash va liderlik')
+                    .split('|').map((it: string, i: number) => <li key={i}>{it.trim()}</li>)}
                 </ul>
               </div>
             </div>

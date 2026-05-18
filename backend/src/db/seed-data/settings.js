@@ -330,6 +330,19 @@ const settings = [
   // Extra
   { key: 'mash.extra_eyebrow', uz: "Qo'shimcha",   ru: 'Дополнительно',    en: 'Beyond classes', group: 'mash' },
   { key: 'mash.extra_title',   uz: 'Darsdan tashqari', ru: 'Вне уроков',  en: 'Beyond the classroom', group: 'mash' },
+  // Stages bullet lists (| separated)
+  { key: 'mash.stg1_items',
+    uz: 'Gimnastika va taekvondo|Mental arifmetika|Kulolchilik va rasm|Mutolaa darslari',
+    ru: 'Гимнастика и тхэквондо|Ментальная арифметика|Гончарное дело и рисование|Уроки чтения',
+    en: 'Gymnastics and taekwondo|Mental arithmetic|Pottery and drawing|Reading lessons',
+    group: 'mash',
+  },
+  { key: 'mash.stg2_items',
+    uz: 'Matematika, ingliz tili, fanlar|STEM amaliyot — Muhandis D|AI vositalar (5–7-sinf)|Tanqidiy fikrlash va liderlik',
+    ru: 'Математика, английский, науки|STEM-практика — Muhandis D|ИИ-инструменты (5–7 классы)|Критическое мышление и лидерство',
+    en: 'Math, English, sciences|STEM hands-on — Muhandis D|AI tools (grades 5–7)|Critical thinking and leadership',
+    group: 'mash',
+  },
 
   // Stages (home page) — for the timeline already in code
   { key: 'stages.eyebrow', uz: "Ta'lim bosqichlari", ru: 'Этапы обучения', en: 'Education stages', group: 'stages' },

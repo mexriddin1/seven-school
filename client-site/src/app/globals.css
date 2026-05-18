@@ -466,7 +466,7 @@ p  { font-size: 1rem; }
 .about-card .row { display: flex; flex-direction: column; gap: 6px; }
 .about-card .row .val {
   font-size: clamp(2.6rem, 5vw, 4.2rem);
-  font-weight: 500;
+  font-weight: 800;
   color: var(--orange);
   letter-spacing: -0.02em;
   line-height: 1;

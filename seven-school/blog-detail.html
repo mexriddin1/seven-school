@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title id="pageTitle">Blog — Seven School</title>
+<meta name="description" id="pageMeta" content="Seven School blogi — ta'lim, grantlar va universitetga tayyorgarlik haqida foydali maqolalar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="header solid" id="header">
+  <div class="container header-inner">
+    <a class="logo" href="index.html" aria-label="Seven School">
+      <img class="logo-light" src="Logo/Light.png" alt="Seven School" height="40">
+      <img class="logo-dark" src="Logo/Dark.png" alt="Seven School" height="40">
+    </a>
+    <nav class="nav" id="nav">
+      <a href="index.html">Bosh sahifa</a>
+      <a href="about.html">Biz haqimizda</a>
+      <a href="natijalar.html">Natijalar</a>
+      <a href="mashgulotlar.html">Mashg'ulot</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="aloqa.html">Aloqa</a>
+    </nav>
+    <div class="header-cta">
+      <a href="aloqa.html" class="btn btn-primary">Ariza Topshirish</a>
+      <button class="hamburger" id="hamburger" aria-label="Menyu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<article class="blog-detail">
+  <div class="container">
+    <div class="blog-detail-header">
+      <span class="badge" id="postBadge"></span>
+      <span class="blog-meta" id="postDate"></span>
+    </div>
+    <h1 id="postTitle"></h1>
+    <div class="blog-detail-hero" id="postHero"></div>
+    <div class="blog-detail-content" id="postContent"></div>
+    <div class="blog-detail-footer">
+      <a href="blog.html" class="btn btn-outline">&larr; Barcha maqolalar</a>
+    </div>
+  </div>
+</article>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <a class="logo" href="index.html">
+          <img src="Logo/Dark.png" alt="Seven School" height="40">
+        </a>
+        <p class="desc">Toshkentdagi xususiy maktab va bog'cha — bilim, sport va AI darslari birgalikda.</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">Bosh sahifa</a><a href="about.html">Biz haqimizda</a><a href="natijalar.html">Natijalar</a><a href="mashgulotlar.html">Mashg'ulot</a><a href="blog.html">Blog</a><a href="aloqa.html">Aloqa</a>
+      </nav>
+      <div class="footer-right">
+        <div><span class="phone-lbl">Qabul</span><div class="phone"><a href="tel:+998555558080">+998 55 555 80 80</a></div></div>
+        <div class="socials">
+          <a href="https://t.me/seven_schooluz" class="social-btn" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 4.5L2.5 12l5.5 2 2 6 3-3.5 5 4 3.5-16zm-4.7 4.2l-7.5 6.8-1.2-3.7 8.7-3.1z"/></svg></a>
+          <a href="https://instagram.com/sevenschool.uz" class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4A4 4 0 1112.6 8 4 4 0 0116 11.4z"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg></a>
+          <a href="https://youtube.com/@sevenschooluz" class="social-btn" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.2-1.5-.8-2.2c-.8-.8-1.7-.8-2.1-.9-3-.2-7.5-.2-7.5-.2s-4.5 0-7.5.2c-.4.1-1.3.1-2.1.9C2.4 5.5 2.2 7 2.2 7S2 8.7 2 10.5v1.7c0 1.7.2 3.5.2 3.5s.2 1.5.8 2.2c.8.8 1.8.8 2.3.9 1.7.2 7.2.2 7.2.2s4.5 0 7.5-.2c.4-.1 1.3-.1 2.1-.9.6-.6.8-2.2.8-2.2s.2-1.7.2-3.5v-1.7c0-1.8-.2-3.5-.2-3.5zM10 14V8l5 3-5 3z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">&copy; 2025 Seven School. Barcha huquqlar himoyalangan.</div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+var posts = {
+  "islom-grant": {
+    badge: "Grant",
+    date: "2026",
+    img: "images/blog/islom-grant.png",
+    title: "O'quvchimiz maktabni bitirmasdan talaba — Islom Barotaliyev, $252,000 grant sohibi",
+    content: '<p>Bu o\'quvchimiz <strong>Islom Barotaliyev</strong> — <strong>$252,000</strong> grant sohibi. O\'zbek so\'mida qancha bo\'ladi bilasizmi? Taxminan <strong>3 milliard 150 million so\'m</strong>.</p><p>Maktabni hali tamomlamadi, lekin ko\'rib turganingizdek TOP universitetlarga qabul qilindi. Qoyil-e! Bir emas, <strong>ikki universitetdan grant!</strong></p><h2>Islom haqida</h2><ul><li>2024-yildan buyon Seven Schoolda tahsil oladi</li><li>Akademik ko\'rsatkichlari: <strong>IELTS 7.5</strong> va <strong>SAT 1410</strong></li><li>Ikki TOP universitetdan grant olgan</li><li>Grant summasi: <strong>$252,000</strong></li></ul><p>Seven School — bilim, sport va AI darslari birgalikda!</p>'
+  },
+  "ielts-8": {
+    badge: "IELTS",
+    date: "12 Aprel, 2026",
+    img: "images/blog/ielts-exam.png",
+    title: "IELTS 8.0 ga qanday tayyorlanish kerak: 7 amaliy maslahat",
+    content: '<p>IELTS — bu xalqaro ingliz tili imtihoni bo\'lib, <strong>Harvard, Oxford, NYU</strong> kabi universitetlarga kirish uchun asosiy talab hisoblanadi. TOP universitetlar odatda <strong>7.0 va undan yuqori</strong> ball talab qiladi.</p><h2>1. Har kuni ingliz tilida o\'qing</h2><p>Akademik maqolalar, gazetalar va ilmiy jurnallarni o\'qish — Reading bo\'limiga eng yaxshi tayyorgarlik. Har kuni kamida 30 daqiqa ajrating.</p><h2>2. Writing uchun struktura o\'rganing</h2><p>Task 1 va Task 2 uchun aniq struktura mavjud. Kirish, asosiy qism va xulosa — har birining o\'z formulasi bor. Buni yod oling va mashq qiling.</p><h2>3. Listening — aktiv tinglash</h2><p>Podcast va TED Talks tinglang. Avval subtitrsiz, keyin subtitrlari bilan tekshiring. Bu ko\'nikmani sezilarli darajada oshiradi.</p><h2>4. Speaking — har kuni gapiring</h2><p>O\'zingiz bilan gapiring, yozib oling va qayta tinglang. Grammatik xatolaringizni o\'zingiz topishga harakat qiling.</p><h2>5. Mock testlarni muntazam ishlang</h2><p>Har hafta kamida bitta to\'liq mock test ishlang. Vaqtni to\'g\'ri boshqarishni o\'rganing.</p><h2>6. Lug\'at boyligingizni oshiring</h2><p>Har kuni 10 ta yangi so\'z o\'rganing. Ularni jumlalarda ishlatishga harakat qiling.</p><h2>7. Seven School ustozlari bilan ishlang</h2><p>Bizning o\'rtacha natijamiz <strong>7.5</strong>, eng yuqori natijamiz esa <strong>8.5</strong>. Professional ustozlarimiz sizni individual ravishda tayyorlaydi.</p>'
+  },
+  "aqsh-ariza": {
+    badge: "Qabul",
+    date: "28 Mart, 2026",
+    img: "images/blog/students-group.png",
+    title: "AQSh universitetlariga ariza topshirish: bosqichma-bosqich qo'llanma",
+    content: '<p>Amerika universitetlariga ariza topshirish murakkab jarayon bo\'lib tuyulishi mumkin, ammo to\'g\'ri rejalashtirish bilan bu ancha osonlashadi.</p><h2>1-bosqich: Universitetlarni tanlang</h2><p>Kamida 8-12 ta universitet tanlang: 3-4 ta "xavfsiz", 4-5 ta "real", va 2-3 ta "orzudagi" variant.</p><h2>2-bosqich: Standardlashtirilgan testlar</h2><p><strong>SAT yoki ACT</strong> imtihonini topshiring. Ko\'pgina universitetlar <strong>1400+</strong> SAT ball talab qiladi.</p><h2>3-bosqich: Common Application</h2><p>Ko\'pgina universitetlar Common App orqali ariza qabul qiladi. Shaxsiy ma\'lumotlar, fanlar ro\'yxati va extracurricular faoliyatlarni to\'ldiring.</p><h2>4-bosqich: Essay yozing</h2><p>Personal Statement — bu eng muhim qism. O\'zingizning o\'ziga xos tarixingizni so\'zlang.</p><h2>5-bosqich: Tavsiya xatlari</h2><p>Kamida 2 ta o\'qituvchidan va 1 ta maslahatchidan tavsiya xati oling.</p><h2>6-bosqich: Moliyaviy yordam</h2><p>FAFSA va CSS Profile to\'ldiring. Ko\'pgina universitetlar xorijiy talabalar uchun ham grant beradi.</p><p>Seven School o\'quvchilari <strong>500 dan ortiq</strong> universitetdan qabul xati olgan — biz sizga ham yordam beramiz.</p>'
+  },
+  "grant-xat": {
+    badge: "Grant",
+    date: "15 Mart, 2026",
+    title: "To'liq grant olish uchun motivatsion xat qanday yoziladi?",
+    content: '<p>Motivatsion xat — bu grantga ariza topshirishning eng muhim qismi. Komisiya sizni shaxsan tanimasligi sababli, bu xat sizning "yuzingiz" bo\'lib xizmat qiladi.</p><h2>Nima yozish kerak?</h2><p>Motivatsion xat quyidagi savollarga javob berishi kerak:</p><ul><li>Nima uchun aynan shu dastur/universitet?</li><li>Sizning maqsadlaringiz nima?</li><li>Qanday tajriba va ko\'nikmalaringiz bor?</li><li>Grant sizga nima uchun kerak?</li></ul><h2>Struktura</h2><p><strong>1-paragraf:</strong> Diqqatni tortuvchi boshlanish — shaxsiy hikoya yoki kuchli dalil.</p><p><strong>2-3 paragraf:</strong> Akademik va hayotiy tajriba, yutuqlar.</p><p><strong>4-paragraf:</strong> Kelajak rejalari va bu dastur qanday yordam berishi.</p><p><strong>Xulosa:</strong> Qisqa va ta\'sirli yakunlash.</p><h2>Eng katta xatolar</h2><ul><li>Umumiy gaplar yozish ("Men juda mehnatli odamman")</li><li>Boshqa arizalardan nusxa ko\'chirish</li><li>Grammatik xatolar</li></ul><p>Seven School o\'quvchilari <strong>$20M dan ortiq</strong> grant qo\'lga kiritgan — motivatsion xat yozishda ustozlarimiz sizga yordam beradi.</p>'
+  },
+  "sat-strategiya": {
+    badge: "SAT",
+    date: "2 Mart, 2026",
+    title: "SAT 1500+ uchun strategiya: vaqt boshqaruvi va xatolar tahlili",
+    content: '<p>SAT imtihonida yuqori ball olish uchun nafaqat bilim, balki <strong>strategiya</strong> ham kerak. Mana, 1500+ ga erishish uchun amaliy maslahatlar.</p><h2>Vaqt boshqaruvi</h2><p>Reading bo\'limida har bir passage uchun <strong>13 daqiqa</strong> ajrating. Qiyin savollarga tiqilib qolmang — avval osonlarini hal qiling.</p><h2>Math bo\'limi</h2><p>Formulalarni yod oling va har kuni kamida <strong>20 ta masala</strong> ishlang. Kalkulyatorsiz bo\'limga alohida e\'tibor bering.</p><h2>Xatolar tahlili</h2><p>Har bir mock testdan keyin xatolaringizni tahlil qiling. Qaysi mavzularda ko\'p xato qilayotganingizni aniqlang va o\'sha mavzularga qaytadan qarang.</p><h2>Seven School natijasi</h2><p>O\'rtacha natijamiz: <strong>1400</strong>. Eng yuqori natijamiz: <strong>1540</strong>. Ustozlarimiz sizga individual strategiya ishlab chiqadi.</p>'
+  },
+  "nyu-abu-dhabi": {
+    badge: "Universitet",
+    date: "18 Fevral, 2026",
+    img: "images/blog/olympiad.png",
+    title: "NYU Abu Dhabi: o'zbekistonlik talabalar uchun imkoniyatlar",
+    content: '<p><strong>NYU Abu Dhabi</strong> — dunyodagi eng selektiv universitetlardan biri. Qabul darajasi atigi <strong>2-3%</strong> ni tashkil etadi, lekin qabul qilingan talabalarga <strong>to\'liq grant</strong> beriladi.</p><h2>Nima uchun NYU Abu Dhabi?</h2><ul><li>To\'liq grant: o\'qish, yashash, ovqatlanish, uchish chiptasi</li><li>150 dan ortiq mamlakatdan talabalar</li><li>Kichik sinflar va individual yondashuv</li><li>Abu Dhabi, Nyu-York va Shanghai kampuslari</li></ul><h2>Qabul talablari</h2><p>Kuchli akademik natijalar, extracurricular faoliyatlar va shaxsiy essay. SAT <strong>1450+</strong> va IELTS <strong>7.0+</strong> tavsiya etiladi.</p><h2>Seven School bitiruvchilari</h2><p>Bizning bitiruvchilarimiz NYU Abu Dhabi ga <strong>to\'liq grant</strong> bilan qabul qilingan. Bu tajriba sizning farzandingiz uchun ham mumkin.</p>'
+  },
+  "stem-kasblar": {
+    badge: "Karyera",
+    date: "5 Fevral, 2026",
+    img: "images/blog/stem-lab.png",
+    title: "STEM yo'nalishlari: kelajakda eng talab qilinadigan kasblar",
+    content: '<p>STEM — Science, Technology, Engineering, Mathematics. Bu yo\'nalishlar <strong>kelajakning eng talab qilinadigan</strong> kasblari uchun asos yaratadi.</p><h2>Eng istiqbolli kasblar</h2><ul><li><strong>Sun\'iy intellekt muhandisi</strong> — o\'rtacha maosh: $150,000+/yil</li><li><strong>Ma\'lumotlar tahlilchisi</strong> — o\'rtacha maosh: $100,000+/yil</li><li><strong>Biotexnolog</strong> — o\'rtacha maosh: $90,000+/yil</li><li><strong>Kiberxavfsizlik mutaxassisi</strong> — o\'rtacha maosh: $120,000+/yil</li></ul><h2>STEM uchun tayyorgarlik</h2><p>Matematika va fanlarni chuqur o\'rganish, dasturlash ko\'nikmalarini rivojlantirish va xalqaro olimpiadalarda ishtirok etish — bular STEM yo\'nalishida muvaffaqiyat kaliti.</p><p>Seven Schoolda <strong>AP Calculus, AP Physics</strong> va boshqa STEM fanlari o\'rgatiladi.</p>'
+  },
+  "harvard-tajriba": {
+    badge: "Tavsiya",
+    date: "22 Yanvar, 2026",
+    img: "images/blog/trophy.png",
+    title: "Bitiruvchilar tarixi: Harvard'ga qanday kirdim?",
+    content: '<p>Jasurbek Umarov — Seven School bitiruvchisi, <strong>$394,000</strong> grant bilan Harvard University ga qabul qilingan.</p><h2>Jasurbekning hikoyasi</h2><p>"9-sinfdan Seven Schoolda o\'qidim. Dastlab SAT va IELTS haqida hech narsa bilmasdim. Lekin ustozlarimning yordami bilan 3 yil ichida SAT dan <strong>1520</strong> va IELTS dan <strong>8.0</strong> ball oldim."</p><h2>Extracurricular faoliyatlar</h2><p>"Maktabda Zakovat jamoasida ishtirok etdim, mutolaa loyihasida faol bo\'ldim va notiqlik san\'ati darslarida o\'z fikrimi ifodalashni o\'rgandim. Bularning barchasi Harvard uchun yozgan essayimda aks etdi."</p><h2>Maslahat</h2><p>"Eng muhimi — o\'zingizga ishonch va tizimli ishlash. Seven School menga faqat bilim bermadi, balki fikrlash usulini o\'rgatdi."</p><p>Bu O\'zbekiston xususiy maktablari orasida <strong>birinchi marta</strong> Harvard ga qabul qilingan o\'quvchi.</p>'
+  },
+  "motivatsiya": {
+    badge: "Ota-onalarga",
+    date: "10 Yanvar, 2026",
+    img: "images/blog/school-kids.png",
+    title: "Farzandingiz akademik motivatsiyasini qanday qo'llab-quvvatlash kerak",
+    content: '<p>Farzandingizning akademik muvaffaqiyati faqat maktabga emas, balki <strong>oiladagi muhitga</strong> ham bog\'liq.</p><h2>1. Natijaga emas, jarayonga e\'tibor bering</h2><p>"Yaxshi baho oldingmi?" o\'rniga "Bugun nima o\'rganding?" deb so\'rang. Bu fikrlash tarzini o\'zgartiradi.</p><h2>2. Mustaqillikni qo\'llab-quvvatlang</h2><p>Farzandingiz o\'z qarorlarini o\'zi qabul qilishga imkon bering. Xato qilsa ham — bu o\'rganish jarayonining bir qismi.</p><h2>3. Maqsad qo\'yishga yordam bering</h2><p>Kichik va erishilishi mumkin bo\'lgan maqsadlar qo\'ying. Har bir muvaffaqiyatni nishonlang.</p><h2>4. Kitob o\'qish madaniyatini shakllantiring</h2><p>Seven Schoolda <strong>1200+ kitob</strong> o\'qilgan va <strong>1500+ soat</strong> audio tinglangan. Uyda ham shu madaniyatni davom ettiring.</p><h2>5. Seven School bilan birga ishlang</h2><p>Biz faqat o\'quvchilar bilan emas, ota-onalar bilan ham yaqindan ishlaymiz. Farzandingizning har bir qadami bizga muhim.</p>'
+  },
+  "akademik-ingliz": {
+    badge: "Tilshunoslik",
+    date: "28 Dekabr, 2025",
+    title: "Akademik ingliz tili: maktabda emas, hayotda kerak bo'lgan ko'nikmalar",
+    content: '<p>Akademik ingliz tili — bu oddiy suhbat ingliz tilidan farq qiladi. U <strong>universitetda o\'qish, ilmiy maqola yozish va professional muhitda ishlash</strong> uchun zarur.</p><h2>Akademik ingliz tili nima?</h2><ul><li>Ilmiy matnlarni tushunish va tahlil qilish</li><li>Essay va research paper yozish</li><li>Prezentatsiya va munozarada ishtirok etish</li><li>Kritik fikrlash va argumentatsiya</li></ul><h2>Oddiy ingliz tilidan farqi</h2><p>Oddiy ingliz tilida "I think it\'s good" deyish mumkin. Akademik tilda esa "The evidence suggests a positive correlation between..." kabi iboralar ishlatiladi.</p><h2>Qanday o\'rganish kerak?</h2><p>Akademik maqolalar o\'qing, essay yozishni mashq qiling va diskussiyalarda ishtirok eting. Seven Schoolda bu ko\'nikmalar <strong>IELTS tayyorlovi</strong> doirasida o\'rgatiladi.</p>'
+  }
+};
+
+(function() {
+  var id = window.location.hash.slice(1) || new URLSearchParams(window.location.search).get('id');
+  var post = posts[id];
+  if (!post) { window.location.href = 'blog.html'; return; }
+
+  document.getElementById('pageTitle').textContent = post.title + ' — Seven School Blog';
+  document.getElementById('pageMeta').setAttribute('content', post.title);
+  document.getElementById('postBadge').textContent = post.badge;
+  document.getElementById('postDate').textContent = post.date;
+  document.getElementById('postTitle').textContent = post.title;
+  if (post.img) {
+    document.getElementById('postHero').innerHTML = '<img src="' + post.img + '" alt="' + post.title + '">';
+  }
+  document.getElementById('postContent').innerHTML = post.content;
+})();
+</script>
+</body>
+</html>

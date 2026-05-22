@@ -26,9 +26,9 @@ export default async function AloqaPage({ params }: { params: { locale: string }
     <>
       <PageHero
         locale={locale}
-        eyebrow={s['aloqa.hero_eyebrow'] || dict.nav.contact}
+        eyebrow={dict.page_eyebrows.aloqa}
         title={s['aloqa.hero_title'] || dict.nav.contact}
-        lead={s['aloqa.hero_lead']}
+        showCrumbs={false}
       />
 
       <CtaBanner locale={locale} settings={s} />

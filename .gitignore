@@ -48,3 +48,6 @@ next-env.d.ts
 
 # Local backups
 **/globals.css.bak
+
+# Local deploy scripts (contain credentials)
+.deploy/

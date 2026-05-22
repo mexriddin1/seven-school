@@ -100,6 +100,70 @@ export type Dict = {
     admissions_secondary: string;
   };
 
+  home_about: {
+    eyebrow: string;
+    title: string;
+    p1_html: string;
+    p2_html: string;
+    cta: string;
+    card_founded: string;
+    card_class_size_lbl: string;
+    card_class_size_val: string;
+    card_class_size_suffix: string;
+    card_teachers_lbl: string;
+    card_teachers_val: string;
+    card_teachers_suffix: string;
+    card_medals_lbl: string;
+    card_medals_val: string;
+  };
+
+  home_unis: {
+    eyebrow: string;
+    title: string;
+  };
+
+  page_eyebrows: {
+    about: string;
+    aloqa: string;
+    blog: string;
+    lessons: string;
+    results: string;
+  };
+
+  about_page: {
+    // "Biz kimmiz?" left text + right card
+    eyebrow: string;
+    title: string;
+    p1_html: string;
+    p2_html: string;
+    card_founded_lbl: string;
+    card_founded_val: string;
+    card_class_lbl: string;
+    card_class_val: string;
+    card_class_suffix: string;
+    card_teachers_lbl: string;
+    card_teachers_val: string;
+    card_teachers_suffix: string;
+    card_medals_lbl: string;
+    card_medals_val: string;
+    // "Natijalarimiz" stats section
+    stats_eyebrow: string;
+    stats_title: string;
+    stat_year_val: string;
+    stat_year_lbl: string;
+    stat_medals_val: string;
+    stat_medals_suffix: string;
+    stat_medals_lbl: string;
+    stat_teachers_val: string;
+    stat_teachers_suffix: string;
+    stat_teachers_lbl: string;
+    stat_clubs_val: string;
+    stat_clubs_lbl: string;
+    stat_sport_val: string;
+    stat_sport_suffix: string;
+    stat_sport_lbl: string;
+  };
+
   meta: {
     home_title: string; home_desc: string;
     about_title: string; about_desc: string;
@@ -173,6 +237,45 @@ const uz: Dict = {
     admissions_grades_label: 'Qabul qilinadigan sinflar', admissions_grades_value: '7–11 sinf',
     admissions_register: "Ro'yxatdan o'tish",
     admissions_secondary: 'Savollaringiz bormi?',
+  },
+  home_about: {
+    eyebrow: 'Seven School',
+    title: "Toshkentdagi xususiy maktab va bog'cha",
+    p1_html: "Bu Toshkentdagi xususiy maktab va bog'cha. Bu yerda ta'lim <strong>4 yoshdan</strong> boshlanadi va <strong>7-sinfgacha</strong> davom etadi. Keyin o'quvchilar Sodiq School'da o'qishni davom ettirib, dunyoning TOP universitetlarga tayyorlanadi.",
+    p2_html: "Bolalar kun davomida <strong>matematika va ingliz tilini</strong>, sport, liderlik va <strong>AI darslarini</strong> birga o'rganadi.",
+    cta: 'Batafsil bilib oling →',
+    card_founded: 'Tashkil etilgan',
+    card_class_size_lbl: "Sinfda o'quvchi", card_class_size_val: '18–22', card_class_size_suffix: 'nafar',
+    card_teachers_lbl: 'Ustozlar tajribasi', card_teachers_val: '8–37', card_teachers_suffix: 'yil',
+    card_medals_lbl: 'Olimpiada medallari', card_medals_val: '29+',
+  },
+  home_unis: {
+    eyebrow: 'Hamkorlar',
+    title: 'Biz bilan ishlaydigan hamkorlar',
+  },
+  page_eyebrows: {
+    about: 'Biz haqimizda',
+    aloqa: "Bog'lanish",
+    blog: 'Blog',
+    lessons: "Mashg'ulot va kurslar",
+    results: 'Bizning natijalar',
+  },
+  about_page: {
+    eyebrow: 'Seven School haqida',
+    title: 'Biz kimmiz?',
+    p1_html: "Seven School — 2024-yilda ochilgan xususiy maktab va bog'cha. Ta'lim 4 yoshdan boshlanib, 7-sinfgacha davom etadi. Keyingi bosqichda o'quvchilarimiz Sodiq School'da o'qishni davom ettiradi.",
+    p2_html: 'Bu yerda maktab dasturidan tashqari tanqidiy fikrlash, liderlik, AI vositalardan foydalanish va arab tili darslari ham o\'qitiladi.',
+    card_founded_lbl: 'Tashkil etilgan', card_founded_val: '2024',
+    card_class_lbl: "Sinfda o'quvchi", card_class_val: '18–22', card_class_suffix: 'nafar',
+    card_teachers_lbl: 'Ustozlar', card_teachers_val: '15+', card_teachers_suffix: 'ustoz',
+    card_medals_lbl: 'Olimpiada medallari', card_medals_val: '29+',
+    stats_eyebrow: 'Raqamlarda',
+    stats_title: 'Natijalarimiz',
+    stat_year_val: '2024', stat_year_lbl: 'yilda ochildi',
+    stat_medals_val: '29', stat_medals_suffix: '+', stat_medals_lbl: 'medal — olimpiada natijalari',
+    stat_teachers_val: '15', stat_teachers_suffix: '+', stat_teachers_lbl: 'ustoz',
+    stat_clubs_val: '6', stat_clubs_lbl: "ta to'garak",
+    stat_sport_val: '500', stat_sport_suffix: '+', stat_sport_lbl: 'soat sport — yillik dastur',
   },
   meta: {
     home_title: 'Seven School — Toshkentdagi yetakchi xususiy maktab',
@@ -254,6 +357,45 @@ const ru: Dict = {
     admissions_register: 'Записаться',
     admissions_secondary: 'Есть вопросы?',
   },
+  home_about: {
+    eyebrow: 'Seven School',
+    title: 'Частная школа и детский сад в Ташкенте',
+    p1_html: 'Это частная школа и детский сад в Ташкенте. Обучение здесь начинается с <strong>4 лет</strong> и продолжается до <strong>7-го класса</strong>. Затем ученики продолжают обучение в Sodiq School и готовятся к поступлению в TOP-университеты мира.',
+    p2_html: 'В течение дня дети одновременно изучают <strong>математику и английский язык</strong>, занимаются спортом, лидерством и <strong>уроками AI</strong>.',
+    cta: 'Узнать подробнее →',
+    card_founded: 'Год основания',
+    card_class_size_lbl: 'Учеников в классе', card_class_size_val: '18–22', card_class_size_suffix: 'чел.',
+    card_teachers_lbl: 'Опыт педагогов', card_teachers_val: '8–37', card_teachers_suffix: 'лет',
+    card_medals_lbl: 'Медалей олимпиад', card_medals_val: '29+',
+  },
+  home_unis: {
+    eyebrow: 'Партнёры',
+    title: 'Наши партнёры',
+  },
+  page_eyebrows: {
+    about: 'О нас',
+    aloqa: 'Связаться',
+    blog: 'Блог',
+    lessons: 'Занятия и курсы',
+    results: 'Наши результаты',
+  },
+  about_page: {
+    eyebrow: 'О Seven School',
+    title: 'Кто мы?',
+    p1_html: 'Seven School — частная школа и детский сад, открытые в 2024 году. Обучение начинается с 4 лет и продолжается до 7-го класса. На следующем этапе наши ученики продолжают обучение в Sodiq School.',
+    p2_html: 'Помимо школьной программы здесь также преподаются критическое мышление, лидерство, использование AI-инструментов и арабский язык.',
+    card_founded_lbl: 'Год основания', card_founded_val: '2024',
+    card_class_lbl: 'Учеников в классе', card_class_val: '18–22', card_class_suffix: 'чел.',
+    card_teachers_lbl: 'Педагоги', card_teachers_val: '15+', card_teachers_suffix: 'педагогов',
+    card_medals_lbl: 'Медалей олимпиад', card_medals_val: '29+',
+    stats_eyebrow: 'В цифрах',
+    stats_title: 'Наши результаты',
+    stat_year_val: '2024', stat_year_lbl: 'год открытия',
+    stat_medals_val: '29', stat_medals_suffix: '+', stat_medals_lbl: 'медалей — результаты олимпиад',
+    stat_teachers_val: '15', stat_teachers_suffix: '+', stat_teachers_lbl: 'педагогов',
+    stat_clubs_val: '6', stat_clubs_lbl: 'кружков',
+    stat_sport_val: '500', stat_sport_suffix: '+', stat_sport_lbl: 'часов спорта — годовая программа',
+  },
   meta: {
     home_title: 'Seven School — ведущая частная школа Ташкента',
     home_desc: 'Seven School — ведущая частная школа Ташкента, готовящая учеников 7–11 классов к поступлению в TOP университеты мира.',
@@ -333,6 +475,45 @@ const en: Dict = {
     admissions_grades_label: 'Grades accepted', admissions_grades_value: 'Grades 7–11',
     admissions_register: 'Register',
     admissions_secondary: 'Got questions?',
+  },
+  home_about: {
+    eyebrow: 'Seven School',
+    title: 'A private school and kindergarten in Tashkent',
+    p1_html: "This is a private school and kindergarten in Tashkent. Learning starts at <strong>age 4</strong> and continues through <strong>grade 7</strong>. After that, students continue at Sodiq School and prepare for the world's TOP universities.",
+    p2_html: 'During the day children learn <strong>maths and English</strong>, sports, leadership and <strong>AI lessons</strong> together.',
+    cta: 'Learn more →',
+    card_founded: 'Founded',
+    card_class_size_lbl: 'Students per class', card_class_size_val: '18–22', card_class_size_suffix: 'kids',
+    card_teachers_lbl: 'Teaching experience', card_teachers_val: '8–37', card_teachers_suffix: 'years',
+    card_medals_lbl: 'Olympiad medals', card_medals_val: '29+',
+  },
+  home_unis: {
+    eyebrow: 'Partners',
+    title: 'Our partners',
+  },
+  page_eyebrows: {
+    about: 'About us',
+    aloqa: 'Get in touch',
+    blog: 'Blog',
+    lessons: 'Lessons & courses',
+    results: 'Our results',
+  },
+  about_page: {
+    eyebrow: 'About Seven School',
+    title: 'Who are we?',
+    p1_html: 'Seven School is a private school and kindergarten opened in 2024. Education starts at age 4 and continues through grade 7. After that, our students continue their studies at Sodiq School.',
+    p2_html: 'In addition to the school curriculum, we also teach critical thinking, leadership, the use of AI tools and Arabic.',
+    card_founded_lbl: 'Founded', card_founded_val: '2024',
+    card_class_lbl: 'Students per class', card_class_val: '18–22', card_class_suffix: 'kids',
+    card_teachers_lbl: 'Teachers', card_teachers_val: '15+', card_teachers_suffix: 'teachers',
+    card_medals_lbl: 'Olympiad medals', card_medals_val: '29+',
+    stats_eyebrow: 'In numbers',
+    stats_title: 'Our results',
+    stat_year_val: '2024', stat_year_lbl: 'year opened',
+    stat_medals_val: '29', stat_medals_suffix: '+', stat_medals_lbl: 'medals — olympiad results',
+    stat_teachers_val: '15', stat_teachers_suffix: '+', stat_teachers_lbl: 'teachers',
+    stat_clubs_val: '6', stat_clubs_lbl: 'clubs',
+    stat_sport_val: '500', stat_sport_suffix: '+', stat_sport_lbl: 'hours of sport — yearly program',
   },
   meta: {
     home_title: "Seven School — Tashkent's leading private school",

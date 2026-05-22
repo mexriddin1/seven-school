@@ -103,6 +103,12 @@ export default function SettingsPage() {
                     </button>
                   </div>
 
+                  {row.description && (
+                    <p className="muted" style={{ fontSize: '0.82rem', marginBottom: 8, marginTop: -2 }}>
+                      {row.description}
+                    </p>
+                  )}
+
                   {isRaw ? (
                     <>
                       <span className="field-label">Qiymat (barcha tillarda bir xil)</span>

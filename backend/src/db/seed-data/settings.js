@@ -19,6 +19,7 @@ const settings = [
     ru: 'Ташкент, Юнусабадский район, ул. Амира Темура 142',
     en: 'Tashkent, Yunusobod district, Amir Temur street 142',
     group: 'contact',
+    description: "Bir nechta filial uchun manzillarni | (pipe) belgisi bilan ajrating. Misol: \"Manzil 1 | Manzil 2 | Manzil 3\"",
   },
   { key: 'contact.hours',
     uz: 'Dushanba–Juma · 9:00–18:00',

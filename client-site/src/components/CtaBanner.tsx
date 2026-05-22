@@ -66,15 +66,23 @@ export function CtaBanner({
               <p className="cta-info-sub">{dict.sections.contact_subtitle}</p>
             </div>
             <div className="cta-info-card">
-              {variant === 'default' && (
-                <div className="cta-info-row">
-                  <PinIcon className="cta-ic" />
-                  <div>
-                    <span className="cta-info-label">{dict.sections.address_label}</span>
-                    <span className="cta-info-value">{settings['contact.address']}</span>
+              {variant === 'default' && (() => {
+                const raw = settings['contact.address'] || '';
+                const addresses = raw.split('|').map((a) => a.trim()).filter(Boolean);
+                if (addresses.length === 0) return null;
+                return addresses.map((addr, idx) => (
+                  <div className="cta-info-row" key={`addr-${idx}`}>
+                    <PinIcon className="cta-ic" />
+                    <div>
+                      <span className="cta-info-label">
+                        {dict.sections.address_label}
+                        {addresses.length > 1 ? ` ${idx + 1}` : ''}
+                      </span>
+                      <span className="cta-info-value">{addr}</span>
+                    </div>
                   </div>
-                </div>
-              )}
+                ));
+              })()}
               <div className="cta-info-row">
                 <PhoneIcon className="cta-ic" />
                 <div>

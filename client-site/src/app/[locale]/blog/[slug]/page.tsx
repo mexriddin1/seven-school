@@ -4,25 +4,22 @@ import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/config';
 import { isLocale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
-import { fetchSiteBundle, fetchBlogPostBySlug, resolveMediaUrl } from '@/lib/api';
-import { CtaBanner } from '@/components/CtaBanner';
+import { fetchBlogPostBySlug, resolveMediaUrl } from '@/lib/api';
 
-type Params = { locale: string; slug: string };
-
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { locale: string; slug: string } }): Promise<Metadata> {
   if (!isLocale(params.locale)) return {};
   try {
     const post = await fetchBlogPostBySlug(params.slug, params.locale as Locale);
-    return { title: post.title, description: post.excerpt };
+    return { title: post.title + ' — Seven School', description: post.excerpt || '' };
   } catch {
     return {};
   }
 }
 
-export default async function BlogDetailPage({ params }: { params: Params }) {
+export default async function BlogDetailPage({ params }: { params: { locale: string; slug: string } }) {
   if (!isLocale(params.locale)) notFound();
   const locale = params.locale as Locale;
-  const dict = getDict(locale);
+  const d = getDict(locale).blog;
 
   let post;
   try {
@@ -32,38 +29,30 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
   }
   if (!post) notFound();
 
-  const bundle = await fetchSiteBundle(locale);
-  const s = bundle.settings;
-
   return (
     <>
-      {/* ============= BLOG DETAIL ARTICLE ============= */}
-      <article className="blog-detail">
-        <div className="container">
-          <div className="blog-detail-header">
-            {post.badge && <span className="badge">{post.badge}</span>}
-            {post.date_label && <span className="blog-meta">{post.date_label}</span>}
-          </div>
+      <section className="page-hero">
+        <div className="container page-hero-inner">
+          <span className="eyebrow">{d.eyebrow}</span>
           <h1>{post.title}</h1>
-          {post.image_url && (
-            <div className="blog-detail-hero">
-              <img src={resolveMediaUrl(post.image_url)} alt={post.title} />
-            </div>
-          )}
-          <div
-            className="blog-detail-content"
-            dangerouslySetInnerHTML={{ __html: post.content || '' }}
-          />
-          <div className="blog-detail-footer">
-            <Link href={`/${locale}/blog`} className="btn btn-outline">
-              &larr; {dict.cta_back_all}
-            </Link>
-          </div>
+          {post.date_label && <p className="lead">{post.date_label}</p>}
         </div>
-      </article>
+      </section>
 
-      {/* ============= CTA BANNER ============= */}
-      <CtaBanner locale={locale} settings={s} showMap={false} />
+      <section>
+        <div className="container">
+          <article className="blog-article">
+            <Link href={`/${locale}/blog`} className="blog-back" data-popup-skip="true">{d.back}</Link>
+            {post.badge && <div className="blog-tag">{post.badge}</div>}
+            {post.image_url && (
+              <div className="blog-cover">
+                <img src={resolveMediaUrl(post.image_url)} alt={post.title} />
+              </div>
+            )}
+            <div className="blog-content" dangerouslySetInnerHTML={{ __html: post.content || post.excerpt || '' }} />
+          </article>
+        </div>
+      </section>
     </>
   );
 }

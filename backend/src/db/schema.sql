@@ -6,6 +6,20 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS application_submissions;
+DROP TABLE IF EXISTS lesson_block_translations;
+DROP TABLE IF EXISTS lesson_blocks;
+DROP TABLE IF EXISTS schedule_item_translations;
+DROP TABLE IF EXISTS schedule_items;
+DROP TABLE IF EXISTS individual_stat_translations;
+DROP TABLE IF EXISTS individual_stats;
+DROP TABLE IF EXISTS curriculum_item_translations;
+DROP TABLE IF EXISTS curriculum_items;
+DROP TABLE IF EXISTS togarak_translations;
+DROP TABLE IF EXISTS togaraks;
+DROP TABLE IF EXISTS kids_feature_translations;
+DROP TABLE IF EXISTS kids_features;
+DROP TABLE IF EXISTS eco_stage_translations;
+DROP TABLE IF EXISTS eco_stages;
 DROP TABLE IF EXISTS exam_course_section_translations;
 DROP TABLE IF EXISTS exam_course_sections;
 DROP TABLE IF EXISTS carousel_images;
@@ -521,4 +535,151 @@ CREATE TABLE exam_course_section_translations (
   body MEDIUMTEXT,
   UNIQUE KEY uniq_ecs_locale (exam_course_section_id, locale),
   FOREIGN KEY (exam_course_section_id) REFERENCES exam_course_sections(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- ECO STAGES (3 cards: Seven Kids / Seven School / Sodiq School)
+-- ============================================================
+CREATE TABLE eco_stages (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  step_label VARCHAR(20) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE eco_stage_translations (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  eco_stage_id INT UNSIGNED NOT NULL,
+  locale VARCHAR(5) NOT NULL,
+  title VARCHAR(150) NOT NULL,
+  age VARCHAR(80),
+  description TEXT,
+  UNIQUE KEY uniq_eco_locale (eco_stage_id, locale),
+  FOREIGN KEY (eco_stage_id) REFERENCES eco_stages(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- KIDS FEATURES (Seven Kids 2x2 grid)
+-- ============================================================
+CREATE TABLE kids_features (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  image_id INT UNSIGNED,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published TINYINT(1) NOT NULL DEFAULT 1,
+  FOREIGN KEY (image_id) REFERENCES media(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE kids_feature_translations (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  kids_feature_id INT UNSIGNED NOT NULL,
+  locale VARCHAR(5) NOT NULL,
+  title VARCHAR(180) NOT NULL,
+  description TEXT,
+  UNIQUE KEY uniq_kf_locale (kids_feature_id, locale),
+  FOREIGN KEY (kids_feature_id) REFERENCES kids_features(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- TOGARAKS (clubs carousel)
+-- ============================================================
+CREATE TABLE togaraks (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  image_id INT UNSIGNED,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published TINYINT(1) NOT NULL DEFAULT 1,
+  FOREIGN KEY (image_id) REFERENCES media(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE togarak_translations (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  togarak_id INT UNSIGNED NOT NULL,
+  locale VARCHAR(5) NOT NULL,
+  title VARCHAR(120) NOT NULL,
+  UNIQUE KEY uniq_tg_locale (togarak_id, locale),
+  FOREIGN KEY (togarak_id) REFERENCES togaraks(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- CURRICULUM ITEMS (Seven School 1–4 sinf, 6 ta blok)
+-- ============================================================
+CREATE TABLE curriculum_items (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  image_id INT UNSIGNED,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published TINYINT(1) NOT NULL DEFAULT 1,
+  FOREIGN KEY (image_id) REFERENCES media(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE curriculum_item_translations (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  curriculum_item_id INT UNSIGNED NOT NULL,
+  locale VARCHAR(5) NOT NULL,
+  title VARCHAR(180) NOT NULL,
+  description TEXT,
+  UNIQUE KEY uniq_ci_locale (curriculum_item_id, locale),
+  FOREIGN KEY (curriculum_item_id) REFERENCES curriculum_items(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- INDIVIDUAL STATS (4 ta — "Individual yondashuv" bloki)
+-- ============================================================
+CREATE TABLE individual_stats (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  num VARCHAR(40) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE individual_stat_translations (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  individual_stat_id INT UNSIGNED NOT NULL,
+  locale VARCHAR(5) NOT NULL,
+  lbl VARCHAR(120) NOT NULL,
+  sub VARCHAR(180),
+  UNIQUE KEY uniq_is_locale (individual_stat_id, locale),
+  FOREIGN KEY (individual_stat_id) REFERENCES individual_stats(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- SCHEDULE ITEMS (Kun tartibi — 11 vaqt + qo'shimcha to'garaklar qatori)
+-- kind: 'time' (standart) | 'extra' (oranje qo'shimcha qator)
+-- ============================================================
+CREATE TABLE schedule_items (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  time_label VARCHAR(20) NOT NULL DEFAULT '',
+  kind ENUM('time','extra') NOT NULL DEFAULT 'time',
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE schedule_item_translations (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  schedule_item_id INT UNSIGNED NOT NULL,
+  locale VARCHAR(5) NOT NULL,
+  title VARCHAR(120),
+  description TEXT,
+  UNIQUE KEY uniq_si_locale (schedule_item_id, locale),
+  FOREIGN KEY (schedule_item_id) REFERENCES schedule_items(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- LESSON BLOCKS (Darslar sahifasidagi 6 ta blok — icon + tags)
+-- tags_json: JSON array — translatable
+-- ============================================================
+CREATE TABLE lesson_blocks (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  icon VARCHAR(20) NOT NULL DEFAULT '',
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE lesson_block_translations (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  lesson_block_id INT UNSIGNED NOT NULL,
+  locale VARCHAR(5) NOT NULL,
+  title VARCHAR(180) NOT NULL,
+  description TEXT,
+  tags_json JSON,
+  UNIQUE KEY uniq_lb_locale (lesson_block_id, locale),
+  FOREIGN KEY (lesson_block_id) REFERENCES lesson_blocks(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

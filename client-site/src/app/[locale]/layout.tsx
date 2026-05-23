@@ -3,9 +3,7 @@ import { isLocale, type Locale, LOCALES } from '@/i18n/config';
 import { LocaleSetter } from '@/components/LocaleSetter';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { ScrollProgress } from '@/components/ScrollProgress';
-import { GlobalScripts } from '@/components/GlobalScripts';
-import { ScrollToTop } from '@/components/ScrollToTop';
+import { PopupForm } from '@/components/PopupForm';
 import { fetchSiteBundle } from '@/lib/api';
 
 export function generateStaticParams() {
@@ -22,7 +20,6 @@ export default async function LocaleLayout({
   if (!isLocale(params.locale)) notFound();
   const locale = params.locale as Locale;
 
-  // Fetch shared site bundle once for header/footer (cached by Next).
   let bundle: Awaited<ReturnType<typeof fetchSiteBundle>> | null = null;
   try {
     bundle = await fetchSiteBundle(locale);
@@ -30,15 +27,15 @@ export default async function LocaleLayout({
     console.error('[layout] failed to fetch site bundle:', err);
   }
 
+  const settings = bundle?.settings || {};
+
   return (
     <>
       <LocaleSetter locale={locale} />
-      <ScrollProgress />
-      <Header locale={locale} settings={bundle?.settings || {}} />
+      <Header locale={locale} settings={settings} />
       {children}
-      <Footer locale={locale} settings={bundle?.settings || {}} />
-      <ScrollToTop />
-      <GlobalScripts />
+      <Footer locale={locale} settings={settings} />
+      <PopupForm locale={locale} />
     </>
   );
 }

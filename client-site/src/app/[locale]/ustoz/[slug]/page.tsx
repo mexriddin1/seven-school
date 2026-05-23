@@ -4,79 +4,70 @@ import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/config';
 import { isLocale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
-import { fetchSiteBundle, fetchTeacherBySlug, resolveMediaUrl } from '@/lib/api';
-import { CtaBanner } from '@/components/CtaBanner';
+import { fetchTeacherBySlug, resolveMediaUrl } from '@/lib/api';
 
-type Params = { locale: string; slug: string };
-
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { locale: string; slug: string } }): Promise<Metadata> {
   if (!isLocale(params.locale)) return {};
-  const t = await fetchTeacherBySlug(params.slug, params.locale as Locale);
-  if (!t) return {};
-  return {
-    title: `${t.name} — Seven School`,
-    description: `${t.name} — ${t.role}`,
-  };
+  try {
+    const t = await fetchTeacherBySlug(params.slug, params.locale as Locale);
+    if (t) return { title: t.name + ' — Seven School', description: t.bio || '' };
+  } catch {}
+  return {};
 }
 
-export default async function UstozDetailPage({ params }: { params: Params }) {
+export default async function TeacherDetailPage({ params }: { params: { locale: string; slug: string } }) {
   if (!isLocale(params.locale)) notFound();
   const locale = params.locale as Locale;
-  const dict = getDict(locale);
+  const d = getDict(locale);
+
   const t = await fetchTeacherBySlug(params.slug, locale);
   if (!t) notFound();
 
-  const bundle = await fetchSiteBundle(locale);
-  const s = bundle.settings;
-
-  const bioHtml = (t.bio || '').trim();
-
   return (
     <>
-      {/* ============= USTOZ DETAIL ============= */}
-      <section className="ustoz-detail">
+      <section className="page-hero">
+        <div className="container page-hero-inner">
+          <span className="eyebrow">{d.about.team_eyebrow}</span>
+          <h1>{t.name}</h1>
+          <p className="lead">{t.role}</p>
+        </div>
+      </section>
+
+      <section>
         <div className="container">
-          <div className="ustoz-grid">
-            <div className="ustoz-avatar">
-              <div
-                className="ustoz-photo"
-                style={{ backgroundImage: `url('${resolveMediaUrl(t.image_url)}')` }}
-              ></div>
-            </div>
-            <div className="ustoz-info">
-              <h2>{t.name}</h2>
-              <p className="ustoz-role">{t.role}</p>
-              <div dangerouslySetInnerHTML={{ __html: bioHtml }} />
-              <div className="ustoz-meta">
-                {(t.meta || []).map((m, i) => (
-                  <div key={i} className="meta-item">
-                    <span className="meta-label">{m.label}</span>
-                    <span className="meta-value">{m.value}</span>
-                  </div>
-                ))}
-              </div>
-              <Link href={`/${locale}/about#team`} className="btn btn-outline">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ width: 16, height: 16, marginRight: 6, verticalAlign: 'middle' }}
-                >
-                  <path d="M19 12H5" />
-                  <path d="M12 19l-7-7 7-7" />
+          <div className="teacher-detail teacher-detail-grid">
+            <div className="teacher-detail-photo">
+              {t.image_url ? (
+                <img src={resolveMediaUrl(t.image_url)} alt={t.name} />
+              ) : (
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+                  <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" fill="rgba(255,255,255,0.55)"/>
                 </svg>
-                {dict.sections.all_teachers}
-              </Link>
+              )}
+            </div>
+            <div className="teacher-detail-info">
+              <div className="team-role">{t.role}</div>
+              <h1>{t.name}</h1>
+              {t.bio && <p>{t.bio}</p>}
+              {t.meta && t.meta.length > 0 && (
+                <div className="teacher-meta">
+                  {t.meta.map((m, i) => (
+                    <div className="teacher-meta-item" key={i}>
+                      <div className="teacher-meta-label">{m.label}</div>
+                      <div className="teacher-meta-value">{m.value}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p style={{ marginTop: 28 }}>
+                <Link href={`/${locale}/about#team`} className="team-cta" data-popup-skip="true">
+                  {d.blog.back}
+                </Link>
+              </p>
             </div>
           </div>
         </div>
       </section>
-
-      {/* ============= CTA BANNER ============= */}
-      <CtaBanner locale={locale} settings={s} showMap={false} />
     </>
   );
 }

@@ -1,177 +1,68 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/config';
 import { isLocale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
-import { fetchSiteBundle, resolveMediaUrl } from '@/lib/api';
-import { PageHero } from '@/components/PageHero';
-import { CtaBanner } from '@/components/CtaBanner';
+import { fetchSiteBundle } from '@/lib/api';
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   if (!isLocale(params.locale)) return {};
   const dict = getDict(params.locale as Locale);
-  return { title: dict.meta.mash_title, description: dict.meta.mash_desc };
+  return { title: dict.meta.lessons_title, description: dict.meta.lessons_desc };
 }
 
-export default async function MashPage({ params }: { params: { locale: string } }) {
+export default async function LessonsPage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound();
   const locale = params.locale as Locale;
-  const dict = getDict(locale);
+  const d = getDict(locale).lessons;
   const bundle = await fetchSiteBundle(locale);
-  const s = bundle.settings;
 
-  const grantStats = (bundle.about_stats || []).filter((st) => st.page === 'mash_grant').slice(0, 4);
-  const subjects = bundle.lesson_subjects || [];
-  const extras = (bundle.lesson_extras || []).slice(0, 4);
+  const blocks = (bundle.lesson_blocks || []).length
+    ? bundle.lesson_blocks.map((b) => ({
+        icon: b.icon || '✦',
+        title: b.title,
+        desc: b.description,
+        tags: Array.isArray(b.tags) ? b.tags : [],
+      }))
+    : d.blocks;
 
   return (
     <>
-      {/* ============= PAGE HERO ============= */}
-      <PageHero
-        locale={locale}
-        eyebrow={dict.page_eyebrows.lessons}
-        title={s['mash.hero_title'] || "Bola bizda nima o'rganadi"}
-        showCrumbs={false}
-      />
+      <section className="page-hero">
+        <div className="container page-hero-inner">
+          <span className="eyebrow">{d.eyebrow}</span>
+          <h1 dangerouslySetInnerHTML={{ __html: d.title_html }} />
+          <p className="lead">{d.lead}</p>
+        </div>
+      </section>
 
-      {/* ============= GRANT BANNER ============= */}
-      <section className="mash-grant-banner">
+      <section>
         <div className="container">
-          <div className="grant-banner-inner reveal">
-            {grantStats.map((st) => {
-              const numeric = /^\d+(\.\d+)?$/.test(st.value);
-              return (
-                <div key={st.id} className="grant-stat">
-                  <span className="grant-dollar">
-                    {st.prefix}
-                    {numeric ? <span className="cu" data-target={st.value}>0</span> : st.value}
-                    {st.suffix}
-                  </span>
-                  <span className="grant-label">{st.label}</span>
+          <div className="lessons-grid">
+            {blocks.map((b, i) => (
+              <div className="lesson-block" key={i}>
+                <div className="lesson-icon">{b.icon}</div>
+                <h3>{b.title}</h3>
+                <p>{b.desc}</p>
+                <div className="lesson-tags">
+                  {(b.tags || []).map((t: string) => <span className="lesson-tag" key={t}>{t}</span>)}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
-          <p className="grant-desc reveal">
-            {s['mash.grant_desc'] ||
-              "Bola Seven School'da o'qish davomida akademik fanlar, sport, AI va liderlik darslarini birga o'rganadi."}
+        </div>
+      </section>
+
+      <section style={{ background: 'var(--navy)', color: '#fff', textAlign: 'center' }}>
+        <div className="container">
+          <h2 style={{ color: '#fff' }} dangerouslySetInnerHTML={{ __html: d.dark_h2_html }} />
+          <p style={{ color: 'rgba(255,255,255,.7)', maxWidth: 600, margin: '20px auto 32px', fontSize: '1rem', lineHeight: 1.7 }}>
+            {d.dark_p}
           </p>
+          <Link href={`/${locale}/aloqa`} className="btn btn-primary btn-lg">{d.dark_btn}</Link>
         </div>
       </section>
-
-      {/* ============= TA'LIM BOSQICHLARI ============= */}
-      <section className="stages">
-        <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">{s['mash.stages_eyebrow'] || 'Bosqichlar'}</span>
-            <h2>{s['mash.stages_title'] || "Ta'lim bosqichlari"}</h2>
-          </div>
-
-          <div className="stages-grid">
-
-            <div className="stg-card stg-card--warm reveal">
-              <div className="stg-number">01</div>
-              <div className="stg-body">
-                <div className="stg-pill">{s['mash.stg1_age'] || '4–6 yosh'}</div>
-                <h3>{s['mash.stg1_title'] || "Bog'cha"}</h3>
-                <p>
-                  {s['mash.stg1_lead'] ||
-                    "Maktabga to'liq tayyorgarlik: o'qish, yozish, sanoq va ingliz tili. Har bir guruhda 18–22 bola, kun bo'yi ta'lim."}
-                </p>
-                <ul>
-                  {(s['mash.stg1_items'] ||
-                    'Gimnastika va taekvondo|Mental arifmetika|Kulolchilik va rasm|Mutolaa darslari')
-                    .split('|')
-                    .map((it: string, i: number) => (
-                      <li key={i}>{it.trim()}</li>
-                    ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="stg-card stg-card--cool reveal delay-1">
-              <div className="stg-number">02</div>
-              <div className="stg-body">
-                <div className="stg-pill">{s['mash.stg2_age'] || '1–7 sinf'}</div>
-                <h3>{s['mash.stg2_title'] || 'Maktab'}</h3>
-                <p>
-                  {s['mash.stg2_lead'] ||
-                    'Akademik fanlar, STEM, AI va liderlik darslari birgalikda. Kichik sinflar, 7-sinfgacha davom etadi.'}
-                </p>
-                <ul>
-                  {(s['mash.stg2_items'] ||
-                    'Matematika, ingliz tili, fanlar|STEM amaliyot — Muhandis D|AI vositalar (5–7-sinf)|Tanqidiy fikrlash va liderlik')
-                    .split('|')
-                    .map((it: string, i: number) => (
-                      <li key={i}>{it.trim()}</li>
-                    ))}
-                </ul>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ============= AKADEMIK & TARBIYA ============= */}
-      <section className="curr">
-        <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">{s['mash.curr_eyebrow'] || "O'quv dasturi"}</span>
-            <h2>{s['mash.curr_title'] || "Farzandingiz nima o'rganadi?"}</h2>
-          </div>
-
-          <div className="curr-tags reveal">
-            {subjects.flatMap((sb) => {
-              const warm = sb.group_key === 'tarbiya';
-              return (sb.tags || []).map((t: string, ti: number) => (
-                <span key={`${sb.id}-${ti}`} className={`curr-tag${warm ? ' curr-tag--warm' : ''}`}>
-                  {t}
-                </span>
-              ));
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ============= QO'SHIMCHA FAOLIYATLAR ============= */}
-      <section className="extra">
-        <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">{s['mash.extra_eyebrow'] || "Qo'shimcha"}</span>
-            <h2>{s['mash.extra_title'] || 'Darsdan tashqari'}</h2>
-          </div>
-
-          <div className="extra-grid reveal">
-            {extras.map((ex) => {
-              const hasLink = !!ex.link_url;
-              return (
-                <a
-                  key={ex.id}
-                  href={hasLink ? ex.link_url : '#'}
-                  target={hasLink ? '_blank' : undefined}
-                  rel={hasLink ? 'noopener' : undefined}
-                  className="extra-card"
-                >
-                  <div className="extra-thumb">
-                    {ex.image_url && <img src={resolveMediaUrl(ex.image_url)} alt={ex.title} />}
-                    <span className="extra-play-btn">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
-                    </span>
-                  </div>
-                  <div className="extra-info">
-                    <h3>{ex.title}</h3>
-                    <p dangerouslySetInnerHTML={{ __html: ex.description || '' }} />
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ============= CTA ============= */}
-      <CtaBanner locale={locale} settings={s} />
     </>
   );
 }

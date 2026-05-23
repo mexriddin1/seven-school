@@ -21,11 +21,25 @@ import { seedExamCourseSections } from './seed-data/exam-course-sections.js';
 import { seedAdvantages } from './seed-data/advantages.js';
 import { seedPricingPlans } from './seed-data/pricing-plans.js';
 import { seedAboutStats } from './seed-data/about-stats.js';
+import { seedEcoStages } from './seed-data/eco-stages.js';
+import { seedKidsFeatures } from './seed-data/kids-features.js';
+import { seedTogaraks } from './seed-data/togaraks.js';
+import { seedCurriculumItems } from './seed-data/curriculum-items.js';
+import { seedIndividualStats } from './seed-data/individual-stats.js';
+import { seedScheduleItems } from './seed-data/schedule-items.js';
+import { seedLessonBlocks } from './seed-data/lesson-blocks.js';
 
 async function clearTables() {
   console.log('[seed] clearing data...');
   const tables = [
     'application_submissions',
+    'lesson_block_translations', 'lesson_blocks',
+    'schedule_item_translations', 'schedule_items',
+    'individual_stat_translations', 'individual_stats',
+    'curriculum_item_translations', 'curriculum_items',
+    'togarak_translations', 'togaraks',
+    'kids_feature_translations', 'kids_features',
+    'eco_stage_translations', 'eco_stages',
     'exam_course_section_translations', 'exam_course_sections',
     'advantage_translations', 'advantages',
     'pricing_plan_translations', 'pricing_plans',
@@ -90,6 +104,13 @@ async function run() {
   await seedAdvantages();
   await seedPricingPlans();
   await seedAboutStats();
+  await seedEcoStages();
+  await seedKidsFeatures();
+  await seedTogaraks();
+  await seedCurriculumItems();
+  await seedIndividualStats();
+  await seedScheduleItems();
+  await seedLessonBlocks();
   console.log('[seed] done');
   await pool.end();
 }

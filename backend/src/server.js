@@ -30,6 +30,13 @@ import publicSiteRouter from './routes/public-site.js';
 import mediaRouter from './routes/media.js';
 import carouselRouter from './routes/carousel.js';
 import examCourseSectionsRouter from './routes/exam-course-sections.js';
+import ecoStagesRouter from './routes/eco-stages.js';
+import kidsFeaturesRouter from './routes/kids-features.js';
+import togaraksRouter from './routes/togaraks.js';
+import curriculumItemsRouter from './routes/curriculum-items.js';
+import individualStatsRouter from './routes/individual-stats.js';
+import scheduleItemsRouter from './routes/schedule-items.js';
+import lessonBlocksRouter from './routes/lesson-blocks.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -76,6 +83,13 @@ app.use('/api/faqs', faqsRouter);
 app.use('/api/applications', applicationsRouter);
 app.use('/api/carousel', carouselRouter);
 app.use('/api/exam-course-sections', examCourseSectionsRouter);
+app.use('/api/eco-stages', ecoStagesRouter);
+app.use('/api/kids-features', kidsFeaturesRouter);
+app.use('/api/togaraks', togaraksRouter);
+app.use('/api/curriculum-items', curriculumItemsRouter);
+app.use('/api/individual-stats', individualStatsRouter);
+app.use('/api/schedule-items', scheduleItemsRouter);
+app.use('/api/lesson-blocks', lessonBlocksRouter);
 
 // Convenience aggregator endpoint that returns the entire site bundle for one locale.
 app.use('/api/public-site', publicSiteRouter);

@@ -460,3 +460,153 @@ export const faqsConfig: EntityConfig = {
     { key: 'page', label: 'Sahifa' },
   ],
 };
+
+// ============== NEW DESIGN ENTITIES ==============
+
+export const ecoStagesConfig: EntityConfig = {
+  endpoint: '/api/eco-stages',
+  basePath: '/eco-stages',
+  title: "Ekotizim bosqichlari (Bosh sahifa 3 ta karta)",
+  singular: 'Bosqich',
+  parentFields: [
+    { name: 'step_label', label: 'Bosqich raqami (masalan: 01)', type: 'text', required: true },
+    { name: 'sort_order', label: 'Tartib', type: 'number' },
+    { name: 'is_published', label: 'Chop etilgan', type: 'checkbox' },
+  ],
+  translationFields: [
+    { name: 'title',       label: 'Sarlavha (masalan: Seven Kids)', type: 'text', required: true },
+    { name: 'age',         label: 'Yosh (masalan: 2–6 yosh)', type: 'text' },
+    { name: 'description', label: 'Tavsif', type: 'textarea' },
+  ],
+  listColumns: [
+    { key: 'step_label', label: 'No.' },
+    { key: 'title', label: 'Sarlavha' },
+    { key: 'age', label: 'Yosh' },
+  ],
+};
+
+export const kidsFeaturesConfig: EntityConfig = {
+  endpoint: '/api/kids-features',
+  basePath: '/kids-features',
+  title: 'Seven Kids xususiyatlari (Bosh sahifa 4 ta karta)',
+  singular: 'Xususiyat',
+  hasImage: true,
+  parentFields: [
+    { name: 'image_id',    label: 'Rasm', type: 'image' },
+    { name: 'sort_order',  label: 'Tartib', type: 'number' },
+    { name: 'is_published', label: 'Chop etilgan', type: 'checkbox' },
+  ],
+  translationFields: [
+    { name: 'title',       label: 'Sarlavha', type: 'text', required: true },
+    { name: 'description', label: 'Tavsif', type: 'textarea' },
+  ],
+  listColumns: [
+    { key: 'title', label: 'Sarlavha' },
+  ],
+};
+
+export const togaraksConfig: EntityConfig = {
+  endpoint: '/api/togaraks',
+  basePath: '/togaraks',
+  title: "To'garaklar (Bosh sahifa karuseli)",
+  singular: "To'garak",
+  hasImage: true,
+  parentFields: [
+    { name: 'image_id',   label: 'Rasm', type: 'image' },
+    { name: 'sort_order', label: 'Tartib', type: 'number' },
+    { name: 'is_published', label: 'Chop etilgan', type: 'checkbox' },
+  ],
+  translationFields: [
+    { name: 'title', label: 'Nomi (masalan: Kulolchilik)', type: 'text', required: true },
+  ],
+  listColumns: [
+    { key: 'title', label: 'Nomi' },
+  ],
+};
+
+export const curriculumItemsConfig: EntityConfig = {
+  endpoint: '/api/curriculum-items',
+  basePath: '/curriculum-items',
+  title: 'Maktab kurikulumi (Bosh sahifa 6 ta blok)',
+  singular: 'Kurikulum bloki',
+  hasImage: true,
+  parentFields: [
+    { name: 'image_id',   label: 'Rasm', type: 'image' },
+    { name: 'sort_order', label: 'Tartib', type: 'number' },
+    { name: 'is_published', label: 'Chop etilgan', type: 'checkbox' },
+  ],
+  translationFields: [
+    { name: 'title',       label: 'Sarlavha (masalan: IT — 1-sinfdan)', type: 'text', required: true },
+    { name: 'description', label: 'Tavsif', type: 'textarea' },
+  ],
+  listColumns: [
+    { key: 'title', label: 'Sarlavha' },
+  ],
+};
+
+export const individualStatsConfig: EntityConfig = {
+  endpoint: '/api/individual-stats',
+  basePath: '/individual-stats',
+  title: 'Individual yondashuv stats (Bosh sahifa 4 ta katak)',
+  singular: 'Stat',
+  parentFields: [
+    { name: 'num',        label: 'Qiymat (masalan: 18–22, Mentor, Haftalik)', type: 'text', required: true },
+    { name: 'sort_order', label: 'Tartib', type: 'number' },
+    { name: 'is_published', label: 'Chop etilgan', type: 'checkbox' },
+  ],
+  translationFields: [
+    { name: 'lbl', label: 'Yorliq (masalan: o\'quvchi)', type: 'text', required: true },
+    { name: 'sub', label: "Quyi izoh (masalan: har sinfda)", type: 'text' },
+  ],
+  listColumns: [
+    { key: 'num', label: 'Qiymat' },
+    { key: 'lbl', label: 'Yorliq' },
+  ],
+};
+
+export const scheduleItemsConfig: EntityConfig = {
+  endpoint: '/api/schedule-items',
+  basePath: '/schedule-items',
+  title: 'Kun tartibi (Bosh sahifa jadval)',
+  singular: 'Vaqt qatori',
+  parentFields: [
+    { name: 'time_label', label: 'Vaqt (masalan: 09:00). Bo\'sh — qo\'shimcha qator', type: 'text' },
+    { name: 'kind', label: 'Tur', type: 'select', options: [
+      { value: 'time',  label: 'Oddiy vaqt qatori' },
+      { value: 'extra', label: "Pastdagi qo'shimcha (orange) qator" },
+    ]},
+    { name: 'sort_order', label: 'Tartib', type: 'number' },
+    { name: 'is_published', label: 'Chop etilgan', type: 'checkbox' },
+  ],
+  translationFields: [
+    { name: 'title',       label: "Sarlavha (faqat 'extra' uchun, masalan: To'garaklar)", type: 'text' },
+    { name: 'description', label: 'Mazmuni (masalan: Nonushta)', type: 'textarea' },
+  ],
+  listColumns: [
+    { key: 'time_label', label: 'Vaqt' },
+    { key: 'description', label: 'Mazmuni' },
+    { key: 'kind', label: 'Tur' },
+  ],
+};
+
+export const lessonBlocksConfig: EntityConfig = {
+  endpoint: '/api/lesson-blocks',
+  basePath: '/lesson-blocks',
+  title: 'Darslar bloklari (Darslar sahifasi)',
+  singular: 'Darslar bloki',
+  parentFields: [
+    { name: 'icon',       label: 'Ikon (emoji yoki belgi, masalan: 🔤)', type: 'text' },
+    { name: 'sort_order', label: 'Tartib', type: 'number' },
+    { name: 'is_published', label: 'Chop etilgan', type: 'checkbox' },
+  ],
+  translationFields: [
+    { name: 'title',       label: 'Sarlavha (masalan: Ingliz tili)', type: 'text', required: true },
+    { name: 'description', label: 'Tavsif', type: 'textarea' },
+    { name: 'tags_json',   label: "Teglar (vergul bilan, masalan: 1-sinfdan, IELTS, Speaking)", type: 'tags',
+      help: "Vergul bilan ajrating. Saytda chiplar shaklida ko'rinadi." },
+  ],
+  listColumns: [
+    { key: 'title', label: 'Sarlavha' },
+    { key: 'icon',  label: 'Ikon' },
+  ],
+};

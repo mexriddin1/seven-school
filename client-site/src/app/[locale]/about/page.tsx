@@ -1,73 +1,52 @@
 import type { Metadata } from 'next';
-import type React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/config';
 import { isLocale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
-import { fetchSiteBundle, resolveMediaUrl, API_BASE } from '@/lib/api';
-import { PageHero } from '@/components/PageHero';
-import { CtaBanner } from '@/components/CtaBanner';
+import { fetchSiteBundle, resolveMediaUrl } from '@/lib/api';
+import { LeadForm } from '@/components/LeadForm';
+import { CountUp } from '@/components/CountUp';
 
-// ---------------------------------------------------------------------------
-// Inline SVG icons copied verbatim from seven-school/about.html (reference).
-// JSX-ized: class -> className, stroke-width -> strokeWidth.
-// ---------------------------------------------------------------------------
-
-function IconClock() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-  );
-}
-function IconUser() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="8" r="5"/><path d="M3 21.8c0-3.5 4-6.3 9-6.3s9 2.8 9 6.3"/></svg>
-  );
-}
-function IconUsers() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-  );
-}
-function IconLayers() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-  );
-}
-function IconAlert() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-  );
+function youtubeShortEmbed(url: string): string {
+  if (!url) return '';
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}?rel=0`;
+  return url;
 }
 
-// Map about_stats icon_key -> icon component, with a default order fallback.
-const statIconMap: Record<string, () => React.JSX.Element> = {
-  clock: IconClock,
-  user: IconUser,
-  users: IconUsers,
-  certificate: IconUser,
-  layers: IconLayers,
-  alert: IconAlert,
-};
+// Strip HTML tags from teacher bio (cards want a short plain-text summary).
+function bioPreview(html: string | null | undefined, max = 180): string {
+  if (!html) return '';
+  const plain = String(html)
+    .replace(/<\/p>\s*<p[^>]*>/gi, ' ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&#x27;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (plain.length <= max) return plain;
+  return plain.slice(0, max).replace(/\s+\S*$/, '') + '…';
+}
 
-// Default order for the 5 stat icons (matches reference order).
-const defaultStatIcons = [IconClock, IconUsers, IconUser, IconLayers, IconAlert];
+const DEFAULT_SHORTS = [
+  'dQw4w9WgXcQ', '3JZ_D3ELwOQ', 'kJQP7kiw5Fk',
+  'L_jWHffIx5E', 'fJ9rUzIMcZQ', '9bZkp7q19f0',
+  'hTWKbfoikeg', 'kXYiU_JCYtU', '60ItHLz5WEA', 'OPf0YbXqDm0',
+];
 
-// Reference defaults (used as fallback when DB has fewer than 5 stats_about rows).
-type StatRow = {
-  id: number | string;
-  prefix: string;
-  value: string;
-  suffix: string;
-  label: string;
-  icon_key?: string | null;
-};
-const defaultStatRows: StatRow[] = [
-  { id: 'd-1', prefix: '', value: '2024', suffix: '', label: 'yilda ochildi', icon_key: 'clock' },
-  { id: 'd-2', prefix: '', value: '29', suffix: '+', label: 'medal — olimpiada natijalari', icon_key: 'users' },
-  { id: 'd-3', prefix: '', value: '15', suffix: '+', label: 'ustoz', icon_key: 'user' },
-  { id: 'd-4', prefix: '', value: '6', suffix: '', label: "ta to'garak", icon_key: 'layers' },
-  { id: 'd-5', prefix: '', value: '500', suffix: '+', label: 'soat sport — yillik dastur', icon_key: 'alert' },
+const GALLERY_FALLBACK = [
+  { src: 'https://picsum.photos/seed/sg1/720/480', cls: '' },
+  { src: 'https://picsum.photos/seed/sg2/480/600', cls: '' },
+  { src: 'https://picsum.photos/seed/sg3/480/800', cls: 'span-row-2' },
+  { src: 'https://picsum.photos/seed/sg4/960/480', cls: 'span-col-2' },
+  { src: 'https://picsum.photos/seed/sg5/720/480', cls: '' },
+  { src: 'https://picsum.photos/seed/sg6/720/480', cls: '' },
+  { src: 'https://picsum.photos/seed/sg7/480/800', cls: 'span-row-2' },
+  { src: 'https://picsum.photos/seed/sg8/720/480', cls: '' },
+  { src: 'https://picsum.photos/seed/sg9/720/480', cls: '' },
 ];
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
@@ -79,225 +58,138 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 export default async function AboutPage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound();
   const locale = params.locale as Locale;
-  const dict = getDict(locale);
+  const d = getDict(locale);
   const bundle = await fetchSiteBundle(locale);
-  const s = bundle.settings;
 
-  const seed = (p: string) => `${API_BASE}/uploads/seed/${p}`;
+  const shorts = (bundle.testimonial_videos || []).slice(0, 10);
+  const shortEmbeds = shorts.length
+    ? shorts.map((v) => youtubeShortEmbed(v.url))
+    : DEFAULT_SHORTS.map((id) => `https://www.youtube.com/embed/${id}?rel=0`);
 
-  // About card rows (right column of "Biz kimmiz?" section).
-  const aboutCardRows = (bundle.about_stats || []).filter(
-    (st) => st.page === 'about_about' || st.page === 'both'
-  );
-
-  // Stats grid rows — bind to about_stats where page='stats_about'.
-  // If DB has fewer than 5, fill remaining slots with reference defaults.
-  const dbStatRows = (bundle.about_stats || []).filter((st) => st.page === 'stats_about');
-  const statRows: StatRow[] = [];
-  for (let i = 0; i < 5; i++) {
-    if (dbStatRows[i]) {
-      const r = dbStatRows[i];
-      statRows.push({
-        id: r.id,
-        prefix: r.prefix,
-        value: r.value,
-        suffix: r.suffix,
-        label: r.label,
-        icon_key: (r as unknown as { icon_key?: string }).icon_key || null,
-      });
-    } else {
-      statRows.push(defaultStatRows[i]);
-    }
-  }
+  const teachers = bundle.teachers || [];
+  const gallery = (bundle.gallery && bundle.gallery.length)
+    ? bundle.gallery.slice(0, 9).map((g, i) => ({
+        src: resolveMediaUrl(g.image_url) || GALLERY_FALLBACK[i % GALLERY_FALLBACK.length].src,
+        cls: g.size_class || GALLERY_FALLBACK[i % GALLERY_FALLBACK.length].cls,
+        alt: g.caption || 'Seven School',
+      }))
+    : GALLERY_FALLBACK.map((g) => ({ src: g.src, cls: g.cls, alt: 'Seven School' }));
 
   return (
     <>
-      {/* ============= PAGE HERO ============= */}
-      <PageHero
-        locale={locale}
-        eyebrow={dict.page_eyebrows.about}
-        title={s['about_page.hero_title'] || dict.nav.about}
-        showCrumbs={false}
-      />
-
-      {/* ============= ABOUT =============
-          Matnlar dictionary'dan (UZ/RU/EN), HTML manbai bilan bir xil. */}
-      <section className="about">
-        <div className="container about-grid">
-          <div className="reveal">
-            <span className="eyebrow">{dict.about_page.eyebrow}</span>
-            <h2>{dict.about_page.title}</h2>
-            <p dangerouslySetInnerHTML={{ __html: dict.about_page.p1_html }} />
-            <p dangerouslySetInnerHTML={{ __html: dict.about_page.p2_html }} />
-          </div>
-          <div className="about-card reveal delay-1">
-            <div className="row">
-              <span className="lbl">{dict.about_page.card_founded_lbl}</span>
-              <span className="val"><span className="accent">{dict.about_page.card_founded_val}</span></span>
-            </div>
-            <div className="row">
-              <span className="lbl">{dict.about_page.card_class_lbl}</span>
-              <span className="val"><span className="accent">{dict.about_page.card_class_val}</span> {dict.about_page.card_class_suffix}</span>
-            </div>
-            <div className="row">
-              <span className="lbl">{dict.about_page.card_teachers_lbl}</span>
-              <span className="val"><span className="accent">{dict.about_page.card_teachers_val}</span> {dict.about_page.card_teachers_suffix}</span>
-            </div>
-            <div className="row">
-              <span className="lbl">{dict.about_page.card_medals_lbl}</span>
-              <span className="val"><span className="accent">{dict.about_page.card_medals_val}</span></span>
-            </div>
-          </div>
+      <section className="page-hero">
+        <div className="container page-hero-inner">
+          <span className="eyebrow">{d.about.eyebrow}</span>
+          <h1>{d.about.title}</h1>
+          <p className="lead">{d.about.lead}</p>
         </div>
       </section>
 
-      {/* ============= STATS =============
-          Matnlar dictionary'dan (HTML manbai bilan bir xil). */}
-      <section className="stats">
+      <section>
         <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">{dict.about_page.stats_eyebrow}</span>
-            <h2>{dict.about_page.stats_title}</h2>
-          </div>
-          <div className="stats-grid">
-            <div className="stat-item reveal">
-              <div className="stat-icon"><IconClock /></div>
-              <span className="stat-big">{dict.about_page.stat_year_val}</span>
-              <span className="stat-label">{dict.about_page.stat_year_lbl}</span>
+          <div className="about-grid">
+            <div className="about-text">
+              <h2>{d.about.who_title}</h2>
+              <p dangerouslySetInnerHTML={{ __html: d.about.who_p1_html }} />
+              <p dangerouslySetInnerHTML={{ __html: d.about.who_p2_html }} />
+              <h3 style={{ marginTop: 32, color: 'var(--orange)', textTransform: 'uppercase' }}>
+                {d.about.est_label}
+              </h3>
             </div>
-            <div className="stat-item reveal delay-1">
-              <div className="stat-icon"><IconUser /></div>
-              <span className="cu" data-target={dict.about_page.stat_medals_val}>0</span>
-              <span className="suffix">{dict.about_page.stat_medals_suffix}</span>
-              <span className="stat-label">{dict.about_page.stat_medals_lbl}</span>
-            </div>
-            <div className="stat-item reveal delay-2">
-              <div className="stat-icon"><IconUsers /></div>
-              <span className="cu" data-target={dict.about_page.stat_teachers_val}>0</span>
-              <span className="suffix">{dict.about_page.stat_teachers_suffix}</span>
-              <span className="stat-label">{dict.about_page.stat_teachers_lbl}</span>
-            </div>
-            <div className="stat-item reveal delay-1">
-              <div className="stat-icon"><IconLayers /></div>
-              <span className="stat-big">{dict.about_page.stat_clubs_val}</span>
-              <span className="stat-label">{dict.about_page.stat_clubs_lbl}</span>
-            </div>
-            <div className="stat-item reveal delay-2">
-              <div className="stat-icon"><IconAlert /></div>
-              <span className="cu" data-target={dict.about_page.stat_sport_val}>0</span>
-              <span className="suffix">{dict.about_page.stat_sport_suffix}</span>
-              <span className="stat-label">{dict.about_page.stat_sport_lbl}</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============= TESTIMONIALS (VIDEO) ============= */}
-      <section className="testimonials">
-        <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">{dict.sections.parents_say_eyebrow}</span>
-            <h2>{dict.sections.parents_say_title}</h2>
-          </div>
-          <div className="video-wrap reveal delay-1">
-            <button className="scroll-arrow scroll-left" aria-label={dict.scroll_left}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <button className="scroll-arrow scroll-right" aria-label={dict.scroll_right}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-            </button>
-            <div className="video-testimonials">
-              {bundle.testimonial_videos.map((v) => (
-                <a
-                  key={v.id}
-                  href={v.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="video-card"
-                  aria-label={v.name || 'Video'}
-                >
-                  <div
-                    className="video-thumb"
-                    style={{ backgroundImage: `url('${resolveMediaUrl(v.thumbnail_url) || seed('img/ustoz-mansur.png')}')` }}
-                  >
-                    <div className="video-play">
-                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                  </div>
-                </a>
+            <div className="about-stats">
+              {d.about.stats.map((st, i) => (
+                <div className="about-stat-big" key={i}>
+                  <div className="val"><CountUp value={st.val} /></div>
+                  <div className="lbl">{st.lbl}</div>
+                </div>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============= TEAM ============= */}
-      <section className="team" id="team">
+      <section style={{ background: '#f8f9fc' }}>
         <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">{dict.sections.team_eyebrow}</span>
-            <h2>{dict.sections.team_title}</h2>
-            <p className="lead" style={{ maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
-              {dict.sections.team_lead}
-            </p>
+          <div className="section-head">
+            <span className="eyebrow">{d.about.shorts_eyebrow}</span>
+            <h2>{d.about.shorts_title}</h2>
           </div>
-          <div className="team-row">
-            {bundle.teachers.map((t, i) => (
-              <Link
-                key={t.id}
-                href={`/${locale}/ustoz/${t.slug}`}
-                className={`team-card reveal${i ? ' delay-' + (i % 4) : ''}`}
-              >
-                <div
-                  className="team-img"
-                  style={{ backgroundImage: `url('${resolveMediaUrl(t.image_url) || seed('img/ustoz-mansur.png')}')` }}
-                ></div>
-                <div className="team-info">
-                  <div className="name">{t.name}</div>
-                  <div className="role">{t.role}</div>
-                  <span className="team-more">
-                    {dict.sections.teacher_more}{' '}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============= GALLERY ============= */}
-      <section className="gallery">
-        <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">{dict.sections.gallery_eyebrow}</span>
-            <h2>{dict.sections.gallery_title}</h2>
-          </div>
-          <div className="masonry reveal delay-1">
-            {bundle.gallery.map((g) => (
-              <div
-                key={g.id}
-                className={`tile ${g.size_class || ''}`.trim()}
-                style={
-                  g.image_url
-                    ? {
-                        backgroundImage: `url('${resolveMediaUrl(g.image_url)}')`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                      }
-                    : undefined
-                }
-              >
-                {!g.image_url && <div className="glyph">S</div>}
-                <div className="overlay">{g.caption}</div>
+          <div className="shorts-grid">
+            {shortEmbeds.map((src, i) => (
+              <div className="shorts-card" key={i}>
+                <iframe
+                  src={src}
+                  title={`Shorts ${i + 1}`}
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ============= CTA BANNER ============= */}
-      <CtaBanner locale={locale} settings={s} />
+      <section id="team">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">{d.about.team_eyebrow}</span>
+            <h2>{d.about.team_title}</h2>
+          </div>
+          <div className="team-grid">
+            {teachers.map((t) => (
+              <div className="team-card" key={t.id}>
+                <div className="team-photo">
+                  {t.image_url ? (
+                    <img src={resolveMediaUrl(t.image_url)} alt={t.name} loading="lazy" />
+                  ) : (
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" fill="rgba(255,255,255,0.35)"/>
+                    </svg>
+                  )}
+                </div>
+                <div className="team-body">
+                  <div className="team-role">{t.role}</div>
+                  <div className="team-name">{t.name}</div>
+                  <div className="team-bio">{bioPreview(t.bio)}</div>
+                  <Link href={`/${locale}/ustoz/${t.slug}`} className="team-cta">
+                    {d.about.team_cta_label}
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section style={{ background: '#f8f9fc' }}>
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">{d.about.gallery_eyebrow}</span>
+            <h2>{d.about.gallery_title}</h2>
+          </div>
+          <div className="gallery-grid">
+            {gallery.map((g, i) => (
+              <div className={'gallery-item ' + (g.cls || '')} key={i}>
+                <img src={g.src} alt={g.alt} loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="container">
+          <div className="lead-form-wrap">
+            <div className="section-head">
+              <span className="eyebrow">{d.about.lead_eyebrow}</span>
+              <h2>{d.about.lead_title}</h2>
+              <p className="sub" dangerouslySetInnerHTML={{ __html: d.about.lead_sub_html }} />
+            </div>
+            <LeadForm locale={locale} />
+          </div>
+        </div>
+      </section>
     </>
   );
 }

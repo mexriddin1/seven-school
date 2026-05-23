@@ -30,6 +30,13 @@ router.get('/', async (req, res) => {
     pricingPlans,
     advantages,
     aboutStats,
+    ecoStages,
+    kidsFeatures,
+    togaraks,
+    curriculumItems,
+    individualStatsRows,
+    scheduleItems,
+    lessonBlocks,
   ] = await Promise.all([
     query(`SELECT \`key\`, value_uz, value_ru, value_en, value_raw FROM settings`),
 
@@ -185,6 +192,65 @@ router.get('/', async (req, res) => {
        LEFT JOIN about_stat_translations st ON st.about_stat_id = s.id AND st.locale = ?
        WHERE s.is_published = 1
        ORDER BY s.sort_order ASC`, [locale]),
+
+    query(
+      `SELECT es.id, es.step_label, es.sort_order,
+              et.title, et.age, et.description
+       FROM eco_stages es
+       LEFT JOIN eco_stage_translations et ON et.eco_stage_id = es.id AND et.locale = ?
+       WHERE es.is_published = 1
+       ORDER BY es.sort_order ASC`, [locale]),
+
+    query(
+      `SELECT kf.id, kf.image_id, kf.sort_order, m.url AS image_url,
+              kft.title, kft.description
+       FROM kids_features kf
+       LEFT JOIN media m ON m.id = kf.image_id
+       LEFT JOIN kids_feature_translations kft ON kft.kids_feature_id = kf.id AND kft.locale = ?
+       WHERE kf.is_published = 1
+       ORDER BY kf.sort_order ASC`, [locale]),
+
+    query(
+      `SELECT tg.id, tg.image_id, tg.sort_order, m.url AS image_url,
+              tgt.title
+       FROM togaraks tg
+       LEFT JOIN media m ON m.id = tg.image_id
+       LEFT JOIN togarak_translations tgt ON tgt.togarak_id = tg.id AND tgt.locale = ?
+       WHERE tg.is_published = 1
+       ORDER BY tg.sort_order ASC`, [locale]),
+
+    query(
+      `SELECT ci.id, ci.image_id, ci.sort_order, m.url AS image_url,
+              cit.title, cit.description
+       FROM curriculum_items ci
+       LEFT JOIN media m ON m.id = ci.image_id
+       LEFT JOIN curriculum_item_translations cit ON cit.curriculum_item_id = ci.id AND cit.locale = ?
+       WHERE ci.is_published = 1
+       ORDER BY ci.sort_order ASC`, [locale]),
+
+    query(
+      `SELECT i.id, i.num, i.sort_order,
+              it.lbl, it.sub
+       FROM individual_stats i
+       LEFT JOIN individual_stat_translations it ON it.individual_stat_id = i.id AND it.locale = ?
+       WHERE i.is_published = 1
+       ORDER BY i.sort_order ASC`, [locale]),
+
+    query(
+      `SELECT s.id, s.time_label, s.kind, s.sort_order,
+              st.title, st.description
+       FROM schedule_items s
+       LEFT JOIN schedule_item_translations st ON st.schedule_item_id = s.id AND st.locale = ?
+       WHERE s.is_published = 1
+       ORDER BY s.sort_order ASC`, [locale]),
+
+    query(
+      `SELECT lb.id, lb.icon, lb.sort_order,
+              lbt.title, lbt.description, lbt.tags_json
+       FROM lesson_blocks lb
+       LEFT JOIN lesson_block_translations lbt ON lbt.lesson_block_id = lb.id AND lbt.locale = ?
+       WHERE lb.is_published = 1
+       ORDER BY lb.sort_order ASC`, [locale]),
   ]);
 
   // map settings → key/value
@@ -205,6 +271,7 @@ router.get('/', async (req, res) => {
   for (const t of teachers) { t.meta = parseJson(t.meta_json); delete t.meta_json; }
   for (const c of examCourses) { c.facts = parseJson(c.facts_json); delete c.facts_json; }
   for (const s of lessonSubjects) { s.tags = parseJson(s.tags_json); delete s.tags_json; }
+  for (const lb of lessonBlocks) { lb.tags = parseJson(lb.tags_json); delete lb.tags_json; }
 
   res.json({
     locale,
@@ -226,6 +293,13 @@ router.get('/', async (req, res) => {
     pricing_plans: pricingPlans,
     advantages,
     about_stats: aboutStats,
+    eco_stages: ecoStages,
+    kids_features: kidsFeatures,
+    togaraks,
+    curriculum_items: curriculumItems,
+    individual_stats: individualStatsRows,
+    schedule_items: scheduleItems,
+    lesson_blocks: lessonBlocks,
   });
 });
 

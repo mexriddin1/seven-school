@@ -60,6 +60,13 @@ export type SiteBundle = {
   pricing_plans: Array<{ id: number; amount: string; currency: string; is_featured: number; sort_order: number; label: string; note: string; includes: string; cta_label: string }>;
   advantages: Array<{ id: number; icon_key: string; accent_num: number; sort_order: number; title: string; description: string }>;
   about_stats: Array<{ id: number; prefix: string; value: string; suffix: string; page: string; sort_order: number; label: string; sub: string | null }>;
+  eco_stages: Array<{ id: number; step_label: string; sort_order: number; title: string; age: string; description: string }>;
+  kids_features: Array<{ id: number; image_id: number | null; image_url: string | null; sort_order: number; title: string; description: string }>;
+  togaraks: Array<{ id: number; image_id: number | null; image_url: string | null; sort_order: number; title: string }>;
+  curriculum_items: Array<{ id: number; image_id: number | null; image_url: string | null; sort_order: number; title: string; description: string }>;
+  individual_stats: Array<{ id: number; num: string; sort_order: number; lbl: string; sub: string | null }>;
+  schedule_items: Array<{ id: number; time_label: string; kind: 'time' | 'extra'; sort_order: number; title: string | null; description: string }>;
+  lesson_blocks: Array<{ id: number; icon: string; sort_order: number; title: string; description: string; tags: string[] }>;
 };
 
 export async function fetchSiteBundle(locale: Locale): Promise<SiteBundle> {

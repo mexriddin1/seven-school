@@ -34,6 +34,15 @@ const NAV = [
     { href: '/gallery', label: 'Galereya' },
     { href: '/faqs', label: 'FAQ' },
   ]},
+  { section: "Yangi dizayn bo'limlari", items: [
+    { href: '/eco-stages',        label: 'Ekotizim bosqichlari (3 karta)' },
+    { href: '/kids-features',     label: 'Seven Kids xususiyatlari (4 karta)' },
+    { href: '/togaraks',          label: "To'garaklar karuseli" },
+    { href: '/curriculum-items',  label: 'Maktab kurikulumi (6 blok)' },
+    { href: '/individual-stats',  label: 'Individual yondashuv stats (4)' },
+    { href: '/schedule-items',    label: 'Kun tartibi' },
+    { href: '/lesson-blocks',     label: 'Darslar bloklari (6 ta)' },
+  ]},
   { section: 'Tizim', items: [
     { href: '/users', label: 'Foydalanuvchilar' },
   ]},

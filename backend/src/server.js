@@ -3,7 +3,9 @@ import express from 'express';
 import cors from 'cors';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import swaggerUi from 'swagger-ui-express';
 import { env } from './config/env.js';
+import { openapiSpec } from './docs/openapi.js';
 import { errorHandler } from './middleware/errors.js';
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
@@ -37,6 +39,7 @@ import curriculumItemsRouter from './routes/curriculum-items.js';
 import individualStatsRouter from './routes/individual-stats.js';
 import scheduleItemsRouter from './routes/schedule-items.js';
 import lessonBlocksRouter from './routes/lesson-blocks.js';
+import webhooksRouter from './routes/webhooks.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -53,6 +56,13 @@ const uploadsAbs = path.resolve(__dirname, '..', env.uploadDir);
 app.use('/uploads', express.static(uploadsAbs));
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
+
+// Swagger / OpenAPI docs
+app.get('/api/docs.json', (_req, res) => res.json(openapiSpec));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec, {
+  customSiteTitle: 'Seven School API',
+  swaggerOptions: { persistAuthorization: true },
+}));
 
 // Auth & users (admin)
 app.use('/api/auth', authRouter);
@@ -90,6 +100,7 @@ app.use('/api/curriculum-items', curriculumItemsRouter);
 app.use('/api/individual-stats', individualStatsRouter);
 app.use('/api/schedule-items', scheduleItemsRouter);
 app.use('/api/lesson-blocks', lessonBlocksRouter);
+app.use('/api/webhooks', webhooksRouter);
 
 // Convenience aggregator endpoint that returns the entire site bundle for one locale.
 app.use('/api/public-site', publicSiteRouter);

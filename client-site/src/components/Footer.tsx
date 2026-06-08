@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Locale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
+import { splitContactAddresses } from '@/lib/contact';
 import { Logo } from './Logo';
 
 export function Footer({ locale, settings }: { locale: Locale; settings: Record<string, string> }) {
@@ -11,18 +12,20 @@ export function Footer({ locale, settings }: { locale: Locale; settings: Record<
   const ig = settings['contact.instagram'] || 'https://instagram.com/sevenschool.uz';
   const yt = settings['contact.youtube'] || 'https://youtube.com/@sevenschooluz';
   const desc = settings['brand.description'] || dict.footer_description;
-  const copy = settings['footer.copyright'] || '© 2025 Seven School. ' + dict.footer_rights;
+  const addresses = splitContactAddresses(settings['contact.address']);
+  const primaryAddress = addresses[0];
+  const copy = settings['footer.copyright'] || `\u00a9 2025 Seven School. ${dict.footer_rights}`;
+
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer-inner">
-          <div>
+          <div className="footer-brand">
             <Logo
               locale={locale}
               variant="footer"
               brand={settings['brand.name']}
               lightUrl={settings['brand.logo_light_url']}
-              darkUrl={settings['brand.logo_dark_url']}
             />
             <p className="desc">{desc}</p>
           </div>
@@ -38,15 +41,27 @@ export function Footer({ locale, settings }: { locale: Locale; settings: Record<
               <span className="phone-lbl">{dict.sections.apply_label_phone}</span>
               <div className="phone"><a href={`tel:${phoneLink}`}>{phone}</a></div>
             </div>
+            {primaryAddress && (
+              <div className="footer-addresses">
+                <span className="phone-lbl">{dict.contact.items[0]?.label || 'Manzil'}</span>
+                <div className="footer-address-list">
+                  <span className="footer-address-text">{primaryAddress}</span>
+                </div>
+              </div>
+            )}
             <div className="socials">
-              <a href={tg} className="social-btn" aria-label="Telegram" title="Telegram">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 3.3 2.7 10.8c-1.3.5-1.3 1.3-.2 1.7l4.9 1.5 11.3-7.1c.5-.3 1-.1.6.2l-9.2 8.3-.3 4.8c.5 0 .8-.2 1.1-.4l2.6-2.5 5.4 4c1 .5 1.7.2 2-.9L23.9 5c.4-1.6-.6-2.4-1.9-1.7z"/></svg>
+              <a href={tg} className="social-btn" aria-label="Telegram">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 4.5L2.5 12l5.5 2 2 6 3-3.5 5 4 3.5-16zm-4.7 4.2l-7.5 6.8-1.2-3.7 8.7-3.1z"/></svg>
               </a>
-              <a href={ig} className="social-btn" aria-label="Instagram" title="Instagram">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm8.2 1.8H8A4.2 4.2 0 0 0 3.8 8v8a4.2 4.2 0 0 0 4.2 4.2h8a4.2 4.2 0 0 0 4.2-4.2V8a4.2 4.2 0 0 0-4.2-4.2zM12 7.3A4.7 4.7 0 1 1 7.3 12 4.7 4.7 0 0 1 12 7.3zm0 1.8A2.9 2.9 0 1 0 14.9 12 2.9 2.9 0 0 0 12 9.1zm5-2.9a1.1 1.1 0 1 1-1.1 1.1A1.1 1.1 0 0 1 17 6.2z"/></svg>
+              <a href={ig} className="social-btn" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5"/>
+                  <path d="M16 11.4A4 4 0 1112.6 8 4 4 0 0116 11.4z"/>
+                  <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+                </svg>
               </a>
-              <a href={yt} className="social-btn" aria-label="YouTube" title="YouTube">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23 8.3a3 3 0 0 0-2.1-2.1C19 5.7 12 5.7 12 5.7s-7 0-8.9.5A3 3 0 0 0 1 8.3 31.8 31.8 0 0 0 .5 12 31.8 31.8 0 0 0 1 15.7a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31.8 31.8 0 0 0 .5-3.7 31.8 31.8 0 0 0-.5-3.7ZM9.8 15.2V8.8l5.6 3.2z"/></svg>
+              <a href={yt} className="social-btn" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.2-1.5-.8-2.2c-.8-.8-1.7-.8-2.1-.9-3-.2-7.5-.2-7.5-.2s-4.5 0-7.5.2c-.4.1-1.3.1-2.1.9C2.4 5.5 2.2 7 2.2 7S2 8.7 2 10.5v1.7c0 1.7.2 3.5.2 3.5s.2 1.5.8 2.2c.8.8 1.8.8 2.3.9 1.7.2 7.2.2 7.2.2s4.5 0 7.5-.2c.4-.1 1.3-.1 2.1-.9.6-.6.8-2.2.8-2.2s.2-1.7.2-3.5v-1.7c0-1.8-.2-3.5-.2-3.5zM10 14V8l5 3-5 3z"/></svg>
               </a>
             </div>
           </div>

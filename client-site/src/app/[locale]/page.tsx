@@ -8,6 +8,10 @@ import { fetchSiteBundle, resolveMediaUrl } from '@/lib/api';
 import { HeroCarousel } from '@/components/HeroCarousel';
 import { TogarakCarousel } from '@/components/TogarakCarousel';
 import { CountUp } from '@/components/CountUp';
+import {
+  EcoIllu1, EcoIllu2, EcoIllu3,
+  ECO_ICONS_1, ECO_ICONS_2, ECO_ICONS_3,
+} from '@/components/EcoArt';
 
 const CURRICULUM_IMAGES = [
   'https://picsum.photos/seed/it-a/900/560',
@@ -150,11 +154,25 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </div>
           <div className="eco-grid">
             {ecoStages.map((c, i) => (
-              <div className="eco-card" key={i}>
-                <div className="eco-step">{c.step}</div>
-                <h3>{c.title}</h3>
-                <div className="eco-age">{c.age}</div>
-                <p>{c.desc}</p>
+              <div className={`eco-card eco-card--v${i + 1}`} key={i}>
+                <div className="eco-card__body">
+                  <div className="eco-card__text">
+                    <div className="eco-step">{c.step}</div>
+                    <h3>{c.title}</h3>
+                    <div className="eco-age">{c.age}</div>
+                    <p>{c.desc}</p>
+                  </div>
+                  <div className="eco-card__illu" aria-hidden="true">
+                    {i === 0 && <EcoIllu1 />}
+                    {i === 1 && <EcoIllu2 />}
+                    {i === 2 && <EcoIllu3 />}
+                  </div>
+                </div>
+                <div className="eco-card__icons" aria-hidden="true">
+                  {(i === 0 ? ECO_ICONS_1 : i === 1 ? ECO_ICONS_2 : ECO_ICONS_3).map((Icon, k) => (
+                    <span className="eco-chip" key={k}><Icon /></span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

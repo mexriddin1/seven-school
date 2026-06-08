@@ -292,31 +292,64 @@ p, li, label, input, textarea, button, a {
 }
 
 /* ============== ECOSYSTEM (3 cards) ============== */
-.eco-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.eco-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .eco-card {
-  background: #fff; border: 1px solid rgba(6,17,60,.06);
-  border-radius: 18px; padding: 36px 28px;
+  --eco-bg: #fff;
+  --eco-chip-bg: #fff;
+  --eco-chip-shadow: 0 4px 10px rgba(6,17,60,.06);
+  background: var(--eco-bg);
+  border-radius: 22px;
+  padding: 26px 26px 22px;
   position: relative; overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 4px 14px rgba(6,17,60,.05);
-  transition: transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s, border-color .35s;
-}
-.eco-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent 0, rgba(255,138,50,.35) 20%, var(--orange) 50%, rgba(255,138,50,.35) 80%, transparent 100%);
-  opacity: .55; transition: opacity .4s, height .4s;
+  display: flex; flex-direction: column;
+  min-height: 320px;
+  box-shadow: 0 4px 14px rgba(6,17,60,.05);
+  transition: transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s;
 }
 .eco-card:hover {
-  transform: translateY(-6px); border-color: rgba(255,138,50,.25);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 22px 44px rgba(6,17,60,.1), 0 8px 18px rgba(255,138,50,.14);
+  transform: translateY(-6px);
+  box-shadow: 0 22px 44px rgba(6,17,60,.1);
 }
-.eco-card:hover::before { opacity: 1; height: 3px; }
+.eco-card--v1 { --eco-bg: #FBEFD7; --eco-chip-bg: #FFF7E4; }
+.eco-card--v2 { --eco-bg: #E4EEF8; --eco-chip-bg: #EFF5FB; }
+.eco-card--v3 { --eco-bg: #ECE9E2; --eco-chip-bg: #F4F1EB; }
+.eco-card__body {
+  display: grid; grid-template-columns: 1fr 44%; gap: 12px;
+  align-items: stretch; flex: 1;
+}
+.eco-card__text { display: flex; flex-direction: column; }
+.eco-card__illu { position: relative; min-height: 160px; }
+.eco-card__illu svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain;
+}
 .eco-step {
-  font-size: .78rem; text-transform: uppercase; letter-spacing: .16em;
-  color: var(--orange); font-weight: 700; margin-bottom: 16px;
+  font-size: .78rem; letter-spacing: .12em;
+  color: var(--orange); font-weight: 700; margin-bottom: 14px;
 }
-.eco-card h3 { text-transform: uppercase; margin-bottom: 8px; font-size: 1.15rem; color: var(--navy); }
-.eco-age { font-size: .82rem; color: var(--orange); font-weight: 600; margin-bottom: 16px; }
-.eco-card p { font-size: .92rem; color: rgba(6,17,60,.7); line-height: 1.65; }
+.eco-card h3 {
+  text-transform: uppercase; margin-bottom: 6px;
+  font-size: 1.1rem; color: var(--navy); letter-spacing: .02em;
+}
+.eco-age { font-size: .82rem; color: var(--orange); font-weight: 600; margin-bottom: 14px; }
+.eco-card p {
+  font-size: .9rem; color: rgba(6,17,60,.72); line-height: 1.6;
+  max-width: 22ch;
+}
+.eco-card__icons { display: flex; gap: 10px; margin-top: 18px; }
+.eco-chip {
+  width: 42px; height: 42px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--eco-chip-bg);
+  border-radius: 11px;
+  box-shadow: var(--eco-chip-shadow);
+  flex: 0 0 auto;
+}
+.eco-chip svg { width: 22px; height: 22px; display: block; }
+@media (max-width: 1024px) {
+  .eco-card__body { grid-template-columns: 1fr 38%; }
+  .eco-card p { max-width: none; }
+}
 
 /* ============== FEATURES (Seven Kids 2x2 + carousel) ============== */
 .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -967,30 +1000,39 @@ p, li, label, input, textarea, button, a {
   margin-top: 0;
 }
 .footer-inner {
-  display: flex; gap: 64px; align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 48px;
   padding-bottom: 48px;
+  align-items: start;
 }
-.footer-inner > div:first-child { flex: 0 0 270px; min-width: 0; }
+.footer-brand { justify-self: start; min-width: 0; max-width: 280px; }
 .footer .logo img { height: 40px; width: auto; filter: brightness(0) invert(1); }
 .footer .desc {
   color: rgba(255,255,255,.48); font-size: .84rem;
   line-height: 1.7; margin-top: 18px; max-width: 240px;
 }
 .footer-nav {
-  flex: 1;
-  display: flex; flex-direction: column; gap: 2px;
-  min-width: 120px;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 14px 28px;
+  justify-self: center;
+  align-self: start;
 }
 .footer-nav a {
   display: block; color: rgba(255,255,255,.52);
-  font-size: .88rem; padding: 6px 0;
+  font-size: .88rem; padding: 0;
   transition: color .2s; text-decoration: none;
 }
 .footer-nav a:hover { color: #fff; }
 .footer-right {
   display: flex; flex-direction: column; gap: 18px;
-  min-width: 180px;
+  align-items: flex-end;
+  text-align: right;
+  justify-self: end;
 }
+.footer-right .socials { justify-content: flex-end; }
+.footer-right .footer-addresses { text-align: right; max-width: 280px; }
 .footer-right .phone-lbl {
   font-size: .72rem; text-transform: uppercase;
   letter-spacing: .12em; color: var(--orange);
@@ -1100,9 +1142,21 @@ body.popup-open { overflow: hidden; }
 }
 @media (max-width: 880px) {
   .eco-grid, .features-grid { grid-template-columns: 1fr; }
+  .eco-card { min-height: 0; padding: 24px; }
+  .eco-card__body { grid-template-columns: 1fr 40%; }
+  .eco-card__illu { min-height: 140px; }
   .schedule-grid { grid-template-columns: repeat(2, 1fr); }
   .schedule-extra { grid-column: span 2; }
-  .footer-inner { flex-direction: column; gap: 36px; }
+  .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+  .footer-brand { justify-self: start; }
+  .footer-nav { justify-self: start; }
+  .footer-right {
+    align-items: flex-start;
+    text-align: left;
+    justify-self: start;
+  }
+  .footer-right .socials { justify-content: flex-start; }
+  .footer-right .footer-addresses { text-align: left; }
   .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
   .blog-grid, .lessons-grid { grid-template-columns: 1fr; }
   .shorts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

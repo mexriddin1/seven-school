@@ -72,15 +72,16 @@ export default function RootLayout({
             })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=109775526', 'ym');
 
             ym(109775526, 'init', {
-                ssr: true,
-                webvisor: true,
+                defer: true,
                 clickmap: true,
-                ecommerce: "dataLayer",
-                referrer: document.referrer,
-                url: location.href,
+                trackLinks: true,
                 accurateTrackBounce: true,
-                trackLinks: true
+                webvisor: true,
+                ecommerce: "dataLayer"
             });
+
+            // SSR muammosini hal qilish va sahifa o'tishlarini aniq kuzatish uchun
+            ym(109775526, 'hit', window.location.href);
           `}
         </Script>
         <noscript>

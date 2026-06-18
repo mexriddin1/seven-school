@@ -19,7 +19,7 @@ const settings = [
     ru: 'Ташкент, Юнусабадский район, ул. Амира Темура 142',
     en: 'Tashkent, Yunusobod district, Amir Temur street 142',
     group: 'contact',
-    description: "Bir nechta filial uchun manzillarni | (pipe) belgisi bilan ajrating. Misol: \"Manzil 1 | Manzil 2 | Manzil 3\"",
+    description: "Bir nechta manzilni yangi qatordan yoki | belgisi bilan ajrating. Misol: \"Manzil 1 | Manzil 2\"",
   },
   { key: 'contact.hours',
     uz: 'Dushanba–Juma · 9:00–18:00',
@@ -30,6 +30,10 @@ const settings = [
   { key: 'contact.telegram', raw: 'https://t.me/seven_schooluz', group: 'contact' },
   { key: 'contact.instagram', raw: 'https://instagram.com/sevenschool.uz', group: 'contact' },
   { key: 'contact.youtube', raw: 'https://youtube.com/@sevenschooluz', group: 'contact' },
+  { key: 'contact.map_lat', raw: '', group: 'contact', description: 'Google Map latitude. Example: 41.3265' },
+  { key: 'contact.map_lng', raw: '', group: 'contact', description: 'Google Map longitude. Example: 69.2848' },
+  { key: 'contact.map_zoom', raw: '16', group: 'contact', description: 'Google Map zoom level. Usually 14-18.' },
+  { key: 'contact.map_embed_url', raw: '', group: 'contact', description: 'Optional full Google Maps embed URL. If filled, it overrides lat/lng.' },
 
   // Hero (index)
   { key: 'hero.pill',
@@ -209,6 +213,40 @@ const settings = [
     ru: 'Подать заявку →',
     en: 'Apply →',
     group: 'pricing',
+  },
+  { key: 'home.pricing_eyebrow', uz: 'Narx', ru: 'Цена', en: 'Pricing', group: 'pricing' },
+  { key: 'home.pricing_title',
+    uz: "Narx — Shaffof narx. Yashirin to'lovlarsiz.",
+    ru: 'Цена — прозрачная. Без скрытых платежей.',
+    en: 'Transparent pricing. No hidden fees.',
+    group: 'pricing',
+  },
+  { key: 'home.pricing_sub',
+    uz: "Har bir narxga barcha mashg'ulotlar, ovqatlanish va to'garaklar kiradi.",
+    ru: 'В каждую цену включены все занятия, питание и кружки.',
+    en: 'Every price includes all classes, meals and clubs.',
+    group: 'pricing',
+  },
+  { key: 'home.pricing_cta',
+    uz: 'Sinov darsiga yozilish',
+    ru: 'Записаться на пробный урок',
+    en: 'Book a trial lesson',
+    group: 'pricing',
+  },
+
+  // Clubs carousel (home)
+  { key: 'home.togarak_eyebrow', uz: "To'garaklar bo'limi", ru: 'Кружки', en: 'Clubs', group: 'togaraklar' },
+  { key: 'home.togarak_title',
+    uz: "To'garaklar — qo'shimcha emas, dastur davomidir.",
+    ru: 'Кружки — не дополнение, а часть программы.',
+    en: "Clubs aren't an add-on — they're part of the program.",
+    group: 'togaraklar',
+  },
+  { key: 'home.togarak_sub',
+    uz: "Kulolchilik · Gimnastika · Suzish · Ijodkorlik · Rasm — hammasi bir joyda. Qo'shimcha qatnovsiz.",
+    ru: 'Гончарное дело · Гимнастика · Плавание · Творчество · Рисование — всё в одном месте. Без поездок.',
+    en: 'Pottery · Gymnastics · Swimming · Creativity · Drawing — all in one place. No extra trips.',
+    group: 'togaraklar',
   },
 
   // Awards section (extra labels)
@@ -438,9 +476,9 @@ export async function seedSettings() {
   console.log('[seed] settings...');
   for (const s of settings) {
     await query(
-      `INSERT INTO settings (\`key\`, value_uz, value_ru, value_en, value_raw, \`group\`)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [s.key, s.uz ?? null, s.ru ?? null, s.en ?? null, s.raw ?? null, s.group ?? 'general'],
+      `INSERT INTO settings (\`key\`, value_uz, value_ru, value_en, value_raw, \`group\`, description)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [s.key, s.uz ?? null, s.ru ?? null, s.en ?? null, s.raw ?? null, s.group ?? 'general', s.description ?? null],
     );
   }
 }

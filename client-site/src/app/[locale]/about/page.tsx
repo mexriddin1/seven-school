@@ -7,13 +7,7 @@ import { getDict } from '@/i18n/dictionaries';
 import { fetchSiteBundle, resolveMediaUrl } from '@/lib/api';
 import { LeadForm } from '@/components/LeadForm';
 import { CountUp } from '@/components/CountUp';
-
-function youtubeShortEmbed(url: string): string {
-  if (!url) return '';
-  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);
-  if (m) return `https://www.youtube.com/embed/${m[1]}?rel=0`;
-  return url;
-}
+import { getYouTubeEmbedUrl } from '@/lib/video';
 
 // Strip HTML tags from teacher bio (cards want a short plain-text summary).
 function bioPreview(html: string | null | undefined, max = 180): string {
@@ -62,8 +56,9 @@ export default async function AboutPage({ params }: { params: { locale: string }
   const bundle = await fetchSiteBundle(locale);
 
   const shorts = (bundle.testimonial_videos || []).slice(0, 10);
-  const shortEmbeds = shorts.length
-    ? shorts.map((v) => youtubeShortEmbed(v.url))
+  const youtubeShorts = shorts.map((v) => getYouTubeEmbedUrl(v.url)).filter(Boolean);
+  const shortEmbeds = youtubeShorts.length
+    ? youtubeShorts
     : DEFAULT_SHORTS.map((id) => `https://www.youtube.com/embed/${id}?rel=0`);
 
   const teachers = bundle.teachers || [];

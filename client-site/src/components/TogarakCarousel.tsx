@@ -1,7 +1,8 @@
 'use client';
+import type { CSSProperties } from 'react';
 import type { TogarakItem } from '@/i18n/dictionaries';
 
-// Static image set used to back the looping clubs marquee.
+// Fallback images keep the marquee usable until an admin image is selected.
 const IMAGES = [
   'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=480&h=320&fit=crop',
   'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=480&h=320&fit=crop',
@@ -14,16 +15,17 @@ const IMAGES = [
   'https://images.unsplash.com/photo-1554380297-0a139470bacc?w=480&h=320&fit=crop',
 ];
 
-export function TogarakCarousel({ items }: { items: TogarakItem[] }) {
-  // duplicate for the seamless marquee loop
+export function TogarakCarousel({ items }: { items: Array<TogarakItem & { imageUrl?: string }> }) {
   const loop = [...items, ...items];
+  const trackStyle = { '--carousel-items': items.length } as CSSProperties;
+
   return (
     <div className="carousel-window">
-      <div className="carousel-track">
+      <div className="carousel-track" style={trackStyle}>
         {loop.map((it, i) => {
-          const src = IMAGES[i % IMAGES.length];
+          const src = it.imageUrl || IMAGES[i % IMAGES.length];
           return (
-            <div className="feat-card" key={i}>
+            <div className="feat-card" key={i} aria-hidden={i >= items.length}>
               <div className="feat-image">
                 <img src={src} alt={it.title} />
               </div>

@@ -112,7 +112,7 @@ export async function fetchTeacherBySlug(slug: string, locale: Locale): Promise<
 }
 
 export async function submitApplication(payload: {
-  name: string; phone: string; message?: string; grade?: string; source_form?: string;
+  name: string; phone: string; message?: string; age?: string; grade?: string; region?: string; source_form?: string;
 }): Promise<void> {
   await apiFetch<{ ok: boolean }>(`/api/applications`, {
     method: 'POST', body: JSON.stringify(payload),

@@ -60,7 +60,7 @@ export default async function LessonsPage({ params }: { params: { locale: string
           <p style={{ color: 'rgba(255,255,255,.7)', maxWidth: 600, margin: '20px auto 32px', fontSize: '1rem', lineHeight: 1.7 }}>
             {d.dark_p}
           </p>
-          <Link href={`/${locale}/aloqa`} className="btn btn-primary btn-lg">{d.dark_btn}</Link>
+          <button type="button" className="btn btn-primary btn-lg" data-popup-open>{d.dark_btn}</button>
         </div>
       </section>
     </>

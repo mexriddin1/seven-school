@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/config';
@@ -67,10 +67,23 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 }
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
+  return HomeContent({ params });
+}
+
+type HomeVariant = 'default' | 'short-landing';
+
+export async function HomeContent({
+  params,
+  variant = 'default',
+}: {
+  params: { locale: string };
+  variant?: HomeVariant;
+}) {
   if (!isLocale(params.locale)) notFound();
   const locale = params.locale as Locale;
   const d = getDict(locale);
   const bundle = await fetchSiteBundle(locale);
+  const isShortLanding = variant === 'short-landing';
 
   const heroSlides = bundle.carousel
     .map((c) => resolveMediaUrl(c.image_url))
@@ -285,34 +298,38 @@ export default async function HomePage({ params }: { params: { locale: string } 
         </div>
       </section>
 
-      {/* ============== DAILY SCHEDULE ============== */}
-      <section style={{ background: '#f8f9fc' }}>
-        <div className="container">
-          <div className="section-head">
-            <span className="eyebrow">{d.home.schedule_eyebrow}</span>
-            <h2>{d.home.schedule_title}</h2>
-          </div>
-          <div className="schedule-grid">
-            {useScheduleFromBundle
-              ? scheduleTimes.map((sc) => (
-                  <div className="schedule-item" key={sc.id}>
-                    <div className="schedule-time">{sc.time_label}</div>
-                    <div className="schedule-desc">{sc.description}</div>
-                  </div>
-                ))
-              : d.home.schedule.map((sc, i) => (
-                  <div className="schedule-item" key={i}>
-                    <div className="schedule-time">{sc.time}</div>
-                    <div className="schedule-desc">{sc.desc}</div>
-                  </div>
-                ))}
-            <div className="schedule-item schedule-extra">
-              <div className="schedule-extra-title">{scheduleExtra?.title || d.home.schedule_extra_title}</div>
-              <div className="schedule-extra-desc">{scheduleExtra?.description || d.home.schedule_extra_desc}</div>
+      {!isShortLanding && (
+        <>
+          {/* ============== DAILY SCHEDULE ============== */}
+          <section style={{ background: '#f8f9fc' }}>
+            <div className="container">
+              <div className="section-head">
+                <span className="eyebrow">{d.home.schedule_eyebrow}</span>
+                <h2>{d.home.schedule_title}</h2>
+              </div>
+              <div className="schedule-grid">
+                {useScheduleFromBundle
+                  ? scheduleTimes.map((sc) => (
+                      <div className="schedule-item" key={sc.id}>
+                        <div className="schedule-time">{sc.time_label}</div>
+                        <div className="schedule-desc">{sc.description}</div>
+                      </div>
+                    ))
+                  : d.home.schedule.map((sc, i) => (
+                      <div className="schedule-item" key={i}>
+                        <div className="schedule-time">{sc.time}</div>
+                        <div className="schedule-desc">{sc.desc}</div>
+                      </div>
+                    ))}
+                <div className="schedule-item schedule-extra">
+                  <div className="schedule-extra-title">{scheduleExtra?.title || d.home.schedule_extra_title}</div>
+                  <div className="schedule-extra-desc">{scheduleExtra?.description || d.home.schedule_extra_desc}</div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        </>
+      )}
 
       {/* ============== PARENT VIDEOS ============== */}
       <section className="parents-section">

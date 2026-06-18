@@ -1,7 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Locale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
 import { Logo } from './Logo';
@@ -10,7 +10,22 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 export function Header({ locale, settings }: { locale: Locale; settings: Record<string, string> }) {
   const dict = getDict(locale);
   const pathname = usePathname();
+  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+  const isLanding = pathname === `/${locale}/short-landing` || pathname === `/${locale}/long-landing`;
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const phone = settings['contact.phone'] || '+998 78 888 80 80';
+  const phoneLink = settings['contact.phone_link'] || phone.replace(/\D/g, '');
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const isSolid = !isHome;
+  const headerClass = ['header', isSolid && 'solid', scrolled && 'scrolled', isLanding && 'header--landing'].filter(Boolean).join(' ');
 
   function isActive(href: string) {
     if (href === `/${locale}`) return pathname === href || pathname === href + '/';
@@ -26,37 +41,44 @@ export function Header({ locale, settings }: { locale: Locale; settings: Record<
   ];
 
   return (
-    <nav className="navbar">
-      <div className="navbar-inner">
+    <header className={headerClass} id="header">
+      <div className="container header-inner">
         <Logo
           locale={locale}
           brand={settings['brand.name']}
           lightUrl={settings['brand.logo_light_url']}
           darkUrl={settings['brand.logo_dark_url']}
         />
-        <div className={'nav-menu' + (open ? ' open' : '')} id="navMenu">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={isActive(l.href) ? 'active' : undefined}
-              onClick={() => setOpen(false)}
-            >
-              {l.label}
-            </Link>
-          ))}
-        </div>
-        <div className="nav-actions">
+        {!isLanding && (
+          <nav className={'nav' + (open ? ' open' : '')} id="nav">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={isActive(l.href) ? 'active' : undefined}
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </Link>
+            ))}
+            <a className="btn btn-primary menu-phone" href={`tel:${phoneLink}`}>{phone}</a>
+          </nav>
+        )}
+        <div className="header-cta">
           <LanguageSwitcher current={locale} />
-          <button
-            className="hamburger"
-            aria-label={dict.open_menu}
-            onClick={() => setOpen(!open)}
-          >
-            <span></span><span></span><span></span>
-          </button>
+          <a className="btn btn-primary header-phone" href={`tel:${phoneLink}`}>{phone}</a>
+          {!isLanding && (
+            <button
+              className={'hamburger' + (open ? ' open' : '')}
+              id="hamburger"
+              aria-label={dict.open_menu}
+              onClick={() => setOpen(!open)}
+            >
+              <span></span><span></span><span></span>
+            </button>
+          )}
         </div>
       </div>
-    </nav>
+    </header>
   );
 }

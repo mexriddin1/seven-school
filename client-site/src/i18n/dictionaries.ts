@@ -147,6 +147,8 @@ export type Dict = {
     fields: {
       name_lbl: string; name_ph: string;
       phone_lbl: string; phone_ph: string;
+      grade_lbl: string; grade_ph: string;
+      region_lbl: string; region_ph: string;
       message_lbl: string; message_ph: string;
       submit: string;
       success: string;
@@ -163,11 +165,15 @@ export type Dict = {
     lead: string;
     name_lbl: string; name_ph: string;
     phone_lbl: string; phone_ph: string;
+    grade_lbl: string; grade_ph: string;
     location_lbl: string; location_ph: string;
     submit: string;
     close: string;
     image_caption: string;
     success: string;
+    success_title: string;
+    success_text: string;
+    success_close: string;
     provinces: string[];
   };
 };
@@ -360,6 +366,8 @@ const uz: Dict = {
     fields: {
       name_lbl: 'Ism va familiya', name_ph: "To'liq ism-sharif",
       phone_lbl: 'Telefon raqami', phone_ph: '+998 XX XXX XX XX',
+      grade_lbl: 'Sinf', grade_ph: 'Sinfni tanlang',
+      region_lbl: 'Viloyat', region_ph: 'Viloyatni tanlang',
       message_lbl: 'Xabaringiz',   message_ph: 'Savolingizni yozing...',
       submit: 'Yuborish',
       success: "Rahmat! Arizangiz qabul qilindi. Tez orada bog'lanamiz.",
@@ -380,10 +388,14 @@ const uz: Dict = {
     lead: 'Ma\'lumotlaringizni qoldiring, operatorimiz siz bilan bog\'lanadi.',
     name_lbl: 'Ismingiz',         name_ph: 'Ism va familiya',
     phone_lbl: 'Telefon raqamingiz', phone_ph: '+998 XX XXX XX XX',
+    grade_lbl: 'Sinf', grade_ph: 'Sinfni tanlang',
     location_lbl: 'Joylashuv',    location_ph: 'Viloyatni tanlang',
     submit: 'Yuborish', close: 'Yopish',
     image_caption: 'Farzandingizning birinchi katta qadami shu yerdan boshlanadi.',
     success: "Rahmat! Arizangiz qabul qilindi. Tez orada bog'lanamiz.",
+    success_title: "Rahmat, ma'lumotingiz uchun!",
+    success_text: "Arizangiz qabul qilindi. Operatorimiz eng qisqa vaqt ichida siz bilan bog'lanadi.",
+    success_close: "Yopish",
     provinces: [
       'Toshkent shahri', 'Toshkent viloyati', 'Andijon viloyati', 'Buxoro viloyati',
       "Farg'ona viloyati", 'Jizzax viloyati', 'Xorazm viloyati', 'Namangan viloyati',
@@ -581,6 +593,8 @@ const ru: Dict = {
     fields: {
       name_lbl: 'Имя и фамилия', name_ph: 'Полное имя',
       phone_lbl: 'Телефон',      phone_ph: '+998 XX XXX XX XX',
+      grade_lbl: 'Класс', grade_ph: 'Выберите класс',
+      region_lbl: 'Регион', region_ph: 'Выберите регион',
       message_lbl: 'Сообщение',  message_ph: 'Напишите ваш вопрос...',
       submit: 'Отправить',
       success: 'Спасибо! Ваша заявка принята. Скоро свяжемся.',
@@ -601,10 +615,14 @@ const ru: Dict = {
     lead: 'Оставьте данные, и наш оператор свяжется с вами.',
     name_lbl: 'Ваше имя',         name_ph: 'Имя и фамилия',
     phone_lbl: 'Номер телефона',  phone_ph: '+998 XX XXX XX XX',
+    grade_lbl: 'Класс', grade_ph: 'Выберите класс',
     location_lbl: 'Локация',      location_ph: 'Выберите регион',
     submit: 'Отправить', close: 'Закрыть',
     image_caption: 'Первый большой шаг вашего ребёнка начинается здесь.',
     success: 'Спасибо! Ваша заявка принята. Скоро свяжемся.',
+    success_title: 'Спасибо за вашу информацию!',
+    success_text: 'Ваша заявка принята. Наш оператор свяжется с вами в ближайшее время.',
+    success_close: 'Закрыть',
     provinces: [
       'г. Ташкент', 'Ташкентская область', 'Андижанская область', 'Бухарская область',
       'Ферганская область', 'Джизакская область', 'Хорезмская область', 'Наманганская область',
@@ -802,6 +820,8 @@ const en: Dict = {
     fields: {
       name_lbl: 'Name', name_ph: 'Full name',
       phone_lbl: 'Phone', phone_ph: '+998 XX XXX XX XX',
+      grade_lbl: 'Grade', grade_ph: 'Select a grade',
+      region_lbl: 'Region', region_ph: 'Select a region',
       message_lbl: 'Message', message_ph: 'Write your question...',
       submit: 'Submit',
       success: "Thank you! We've received your request and will be in touch soon.",
@@ -822,10 +842,14 @@ const en: Dict = {
     lead: 'Leave your details and our operator will contact you.',
     name_lbl: 'Your name',  name_ph: 'Full name',
     phone_lbl: 'Your phone number', phone_ph: '+998 XX XXX XX XX',
+    grade_lbl: 'Grade', grade_ph: 'Select a grade',
     location_lbl: 'Location', location_ph: 'Select a region',
     submit: 'Submit', close: 'Close',
     image_caption: "Your child's first big step starts here.",
     success: "Thank you! We've received your request and will be in touch soon.",
+    success_title: 'Thank you for your information!',
+    success_text: 'Your request has been received. Our operator will contact you shortly.',
+    success_close: 'Close',
     provinces: [
       'Tashkent city', 'Tashkent region', 'Andijan region', 'Bukhara region',
       'Fergana region', 'Jizzakh region', 'Khorezm region', 'Namangan region',

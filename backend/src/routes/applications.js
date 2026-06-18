@@ -12,6 +12,7 @@ const submitSchema = z.object({
   name: z.string().min(1).max(150),
   phone: z.string().min(4).max(40),
   message: z.string().max(5000).nullable().optional(),
+  age: z.string().max(40).nullable().optional(),
   grade: z.string().max(20).nullable().optional(),
   region: z.string().max(120).nullable().optional(),
   source_form: z.string().max(60).optional(),
@@ -21,9 +22,9 @@ const submitSchema = z.object({
 router.post('/', async (req, res) => {
   const b = submitSchema.parse(req.body);
   const result = await query(
-    `INSERT INTO application_submissions (source_form, name, phone, message, grade, region, status)
-     VALUES (?, ?, ?, ?, ?, ?, 'new')`,
-    [b.source_form ?? 'contact', b.name, b.phone, b.message ?? null, b.grade ?? null, b.region ?? null],
+    `INSERT INTO application_submissions (source_form, name, phone, message, age, grade, region, status)
+     VALUES (?, ?, ?, ?, ?, ?, ?, 'new')`,
+    [b.source_form ?? 'contact', b.name, b.phone, b.message ?? null, b.age ?? null, b.grade ?? null, b.region ?? null],
   );
   const leadPayload = {
     ...b,

@@ -1,16 +1,18 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import type { Locale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
 import { submitApplication } from '@/lib/api';
+import { AGE_OPTIONS, GRADE_OPTIONS, UZBEKISTAN_REGIONS } from '@/lib/form-options';
 
 type Props = { locale: Locale };
 
-// Modal application form. Listens for clicks on any `.btn[data-popup-open]`
-// element AND, to mirror the static site's behaviour, any `.btn-primary`
-// outside the form itself or explicit opt-outs.
 export function PopupForm({ locale }: Props) {
   const d = getDict(locale).popup;
+  const pathname = usePathname();
+  const router = useRouter();
+  const isLanding = pathname?.includes('/short-landing') || pathname?.includes('/long-landing');
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -25,17 +27,24 @@ export function PopupForm({ locale }: Props) {
     function onClick(e: MouseEvent) {
       const t = e.target as HTMLElement | null;
       if (!t) return;
-      const trigger = t.closest<HTMLElement>('.btn');
+      const trigger = t.closest<HTMLElement>('[data-popup-open], .btn-primary');
       if (!trigger) return;
-      // Skip the form's own close/submit and explicit opt-outs.
       if (trigger.closest('.popup-form-modal')) return;
       if (trigger.hasAttribute('data-popup-skip')) return;
       if (trigger.closest('[data-popup-skip="true"]')) return;
-      // Skip CTAs that are themselves real submits in inline lead forms.
       if ((trigger as HTMLButtonElement).type === 'submit' && trigger.closest('form')) return;
-      // Skip ghost / outline buttons that scroll instead of opening the form.
-      if (trigger.classList.contains('btn-ghost')) return;
-      if (trigger.getAttribute('href')?.startsWith('#')) return;
+      const href = trigger.getAttribute('href') || '';
+      if (href.startsWith('#') || href.startsWith('tel:') || href.startsWith('mailto:')) return;
+
+      if (isLanding) {
+        const ctaTarget = document.querySelector('.cta-banner, .cta-section');
+        if (ctaTarget) {
+          e.preventDefault();
+          ctaTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+      }
+
       e.preventDefault();
       setOpen(true);
     }
@@ -48,7 +57,7 @@ export function PopupForm({ locale }: Props) {
       document.removeEventListener('click', onClick);
       document.removeEventListener('keydown', onKey);
     };
-  }, [close]);
+  }, [close, isLanding]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,19 +68,17 @@ export function PopupForm({ locale }: Props) {
       await submitApplication({
         name: String(data.get('name') || ''),
         phone: String(data.get('phone') || ''),
-        message: String(data.get('location') || ''),
+        age: String(data.get('age') || '') || undefined,
+        grade: String(data.get('grade') || '') || undefined,
+        region: String(data.get('region') || '') || undefined,
         source_form: 'popup',
       });
-      alert(d.success);
-      form.reset();
-      close();
     } catch (err) {
       console.error(err);
-      alert(d.success); // graceful even on failure — UX preference from static site
-      form.reset();
-      close();
     } finally {
-      setSubmitting(false);
+      form.reset();
+      setOpen(false);
+      router.push(`/${locale}/thanks`);
     }
   }
 
@@ -89,10 +96,24 @@ export function PopupForm({ locale }: Props) {
               <input id="popupName" name="name" type="text" placeholder={d.name_ph} required />
               <label htmlFor="popupPhone">{d.phone_lbl}</label>
               <input id="popupPhone" name="phone" type="tel" placeholder={d.phone_ph} required />
-              <label htmlFor="popupLocation">{d.location_lbl}</label>
-              <select id="popupLocation" name="location" required defaultValue="">
+              <label htmlFor="popupAge">Yosh</label>
+              <select id="popupAge" name="age" required defaultValue="">
+                <option value="" disabled>Yoshni tanlang</option>
+                {AGE_OPTIONS.map((age) => (
+                  <option key={age} value={age}>{age}</option>
+                ))}
+              </select>
+              <label htmlFor="popupGrade">{d.grade_lbl}</label>
+              <select id="popupGrade" name="grade" required defaultValue="">
+                <option value="" disabled>{d.grade_ph}</option>
+                {GRADE_OPTIONS.map((grade) => (
+                  <option key={grade} value={grade}>{grade}</option>
+                ))}
+              </select>
+              <label htmlFor="popupRegion">{d.location_lbl}</label>
+              <select id="popupRegion" name="region" required defaultValue="">
                 <option value="" disabled>{d.location_ph}</option>
-                {d.provinces.map((p) => (
+                {UZBEKISTAN_REGIONS.map((p) => (
                   <option key={p} value={p}>{p}</option>
                 ))}
               </select>
@@ -103,7 +124,7 @@ export function PopupForm({ locale }: Props) {
           </div>
           <div className="popup-form-right">
             <img
-              src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80"
+              src="/img/hero-bg.jpg"
               alt="Seven School"
               loading="lazy"
             />

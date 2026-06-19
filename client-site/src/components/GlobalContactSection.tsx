@@ -12,7 +12,7 @@ export function GlobalContactSection({
   settings: Record<string, string>;
 }) {
   const pathname = usePathname();
-  const hiddenPaths = [`/${locale}/aloqa`, `/${locale}/thanks`];
+  const hiddenPaths = [`/${locale}/about`, `/${locale}/aloqa`, `/${locale}/thanks`];
 
   if (hiddenPaths.some((path) => pathname === path || pathname?.startsWith(`${path}?`))) {
     return null;

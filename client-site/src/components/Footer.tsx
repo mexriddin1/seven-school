@@ -9,6 +9,7 @@ import { Logo } from './Logo';
 export function Footer({ locale, settings }: { locale: Locale; settings: Record<string, string> }) {
   const dict = getDict(locale);
   const pathname = usePathname();
+  const isThanks = pathname === `/${locale}/thanks` || pathname === `/${locale}/thanks/`;
   const isLanding = pathname === `/${locale}/short-landing` || pathname === `/${locale}/long-landing`;
   const phone = settings['contact.phone'] || '+998 78 888 80 80';
   const phoneLink = settings['contact.phone_link'] || phone.replace(/\D/g, '');
@@ -19,6 +20,8 @@ export function Footer({ locale, settings }: { locale: Locale; settings: Record<
   const addresses = splitContactAddresses(settings['contact.address']);
   const primaryAddress = addresses[0];
   const copy = settings['footer.copyright'] || `© 2025 Seven School. ${dict.footer_rights}`;
+
+  if (isThanks) return null;
 
   return (
     <footer className={'footer' + (isLanding ? ' footer--landing' : '')}>

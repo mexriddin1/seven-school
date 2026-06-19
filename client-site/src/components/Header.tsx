@@ -11,6 +11,7 @@ export function Header({ locale, settings }: { locale: Locale; settings: Record<
   const dict = getDict(locale);
   const pathname = usePathname();
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+  const isThanks = pathname === `/${locale}/thanks` || pathname === `/${locale}/thanks/`;
   const isLanding = pathname === `/${locale}/short-landing` || pathname === `/${locale}/long-landing`;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -26,6 +27,8 @@ export function Header({ locale, settings }: { locale: Locale; settings: Record<
 
   const isSolid = !isHome;
   const headerClass = ['header', isSolid && 'solid', scrolled && 'scrolled', isLanding && 'header--landing'].filter(Boolean).join(' ');
+
+  if (isThanks) return null;
 
   function isActive(href: string) {
     if (href === `/${locale}`) return pathname === href || pathname === href + '/';

@@ -13,7 +13,6 @@ export function PopupForm({ locale }: Props) {
   const d = getDict(locale).popup;
   const pathname = usePathname();
   const router = useRouter();
-  const isLanding = pathname?.includes('/short-landing') || pathname?.includes('/long-landing');
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -28,7 +27,7 @@ export function PopupForm({ locale }: Props) {
     function onClick(e: MouseEvent) {
       const t = e.target as HTMLElement | null;
       if (!t) return;
-      const trigger = t.closest<HTMLElement>('[data-popup-open], .btn-primary');
+      const trigger = t.closest<HTMLElement>('[data-popup-open]');
       if (!trigger) return;
       if (trigger.closest('.popup-form-modal')) return;
       if (trigger.hasAttribute('data-popup-skip')) return;
@@ -36,15 +35,6 @@ export function PopupForm({ locale }: Props) {
       if ((trigger as HTMLButtonElement).type === 'submit' && trigger.closest('form')) return;
       const href = trigger.getAttribute('href') || '';
       if (href.startsWith('#') || href.startsWith('tel:') || href.startsWith('mailto:')) return;
-
-      if (isLanding) {
-        const ctaTarget = document.querySelector('.cta-banner');
-        if (ctaTarget && !trigger.closest('.cta-banner')) {
-          e.preventDefault();
-          ctaTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          return;
-        }
-      }
 
       e.preventDefault();
       setOpen(true);
@@ -58,7 +48,7 @@ export function PopupForm({ locale }: Props) {
       document.removeEventListener('click', onClick);
       document.removeEventListener('keydown', onKey);
     };
-  }, [close, isLanding]);
+  }, [close]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

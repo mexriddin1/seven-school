@@ -11,7 +11,9 @@ export function Header({ locale, settings }: { locale: Locale; settings: Record<
   const dict = getDict(locale);
   const pathname = usePathname();
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+  const isThanks = pathname === `/${locale}/thanks` || pathname === `/${locale}/thanks/`;
   const isLanding = pathname === `/${locale}/short-landing` || pathname === `/${locale}/long-landing`;
+  const isMinimalHeader = isLanding || isThanks;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const phone = settings['contact.phone'] || '+998 78 888 80 80';
@@ -25,7 +27,7 @@ export function Header({ locale, settings }: { locale: Locale; settings: Record<
   }, []);
 
   const isSolid = !isHome;
-  const headerClass = ['header', isSolid && 'solid', scrolled && 'scrolled', isLanding && 'header--landing'].filter(Boolean).join(' ');
+  const headerClass = ['header', isSolid && 'solid', scrolled && 'scrolled', isMinimalHeader && 'header--landing'].filter(Boolean).join(' ');
 
   function isActive(href: string) {
     if (href === `/${locale}`) return pathname === href || pathname === href + '/';
@@ -49,7 +51,7 @@ export function Header({ locale, settings }: { locale: Locale; settings: Record<
           lightUrl={settings['brand.logo_light_url']}
           darkUrl={settings['brand.logo_dark_url']}
         />
-        {!isLanding && (
+        {!isMinimalHeader && (
           <nav className={'nav' + (open ? ' open' : '')} id="nav">
             {links.map((l) => (
               <Link
@@ -67,7 +69,7 @@ export function Header({ locale, settings }: { locale: Locale; settings: Record<
         <div className="header-cta">
           <LanguageSwitcher current={locale} />
           <a className="btn btn-primary header-phone" href={`tel:${phoneLink}`}>{phone}</a>
-          {!isLanding && (
+          {!isMinimalHeader && (
             <button
               className={'hamburger' + (open ? ' open' : '')}
               id="hamburger"

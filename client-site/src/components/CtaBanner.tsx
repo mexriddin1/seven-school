@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent, type SVGProps } from 'react';
+import { useRouter } from 'next/navigation';
 import type { Locale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
 import { submitApplication } from '@/lib/api';
@@ -120,6 +121,7 @@ export function CtaBanner({
 }: Props) {
   const dict = getDict(locale);
   const contact = dict.contact;
+  const router = useRouter();
   const phone = settings['contact.phone'] || '+998 78 888 80 80';
   const phoneLink = settings['contact.phone_link'] || phone.replace(/\D/g, '');
   const address = settings['contact.address'] || contact.items[0]?.value || '';
@@ -166,10 +168,7 @@ export function CtaBanner({
       });
       setSuccess(true);
       form.reset();
-      setTimeout(() => {
-        setSuccess(false);
-        setBusy(false);
-      }, 6000);
+      router.push(`/${locale}/thanks`);
     } catch (err) {
       console.error(err);
       setBusy(false);

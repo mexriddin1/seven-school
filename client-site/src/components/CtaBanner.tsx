@@ -6,6 +6,7 @@ import type { Locale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
 import { submitApplication } from '@/lib/api';
 import { getUtm } from '@/lib/utm';
+import { fireMetaLead } from '@/lib/meta-pixel';
 import { firstContactAddress, splitContactAddresses } from '@/lib/contact';
 import { AGE_OPTIONS, GRADE_OPTIONS, UZBEKISTAN_REGIONS } from '@/lib/form-options';
 
@@ -168,6 +169,7 @@ export function CtaBanner({
         region: region || undefined,
         source_form: 'cta-banner',
       });
+      await fireMetaLead();
       setSuccess(true);
       form.reset();
       router.push(`/${locale}/thanks`);

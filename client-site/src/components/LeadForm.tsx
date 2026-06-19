@@ -5,6 +5,7 @@ import type { Locale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
 import { submitApplication } from '@/lib/api';
 import { getUtm } from '@/lib/utm';
+import { fireMetaLead } from '@/lib/meta-pixel';
 import { AGE_OPTIONS, GRADE_OPTIONS, UZBEKISTAN_REGIONS } from '@/lib/form-options';
 
 export function LeadForm({ locale }: { locale: Locale }) {
@@ -27,6 +28,7 @@ export function LeadForm({ locale }: { locale: Locale }) {
         region: String(data.get('region') || '') || undefined,
         source_form: 'lead',
       });
+      await fireMetaLead();
     } catch (err) {
       console.error(err);
     } finally {

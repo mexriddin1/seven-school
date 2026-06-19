@@ -5,7 +5,6 @@ import type { Locale } from '@/i18n/config';
 import { isLocale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
 import { fetchSiteBundle, resolveMediaUrl } from '@/lib/api';
-import { LeadForm } from '@/components/LeadForm';
 import { CountUp } from '@/components/CountUp';
 import { getYouTubeEmbedUrl } from '@/lib/video';
 
@@ -169,19 +168,6 @@ export default async function AboutPage({ params }: { params: { locale: string }
                 <img src={g.src} alt={g.alt} loading="lazy" />
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div className="container">
-          <div className="lead-form-wrap">
-            <div className="section-head">
-              <span className="eyebrow">{d.about.lead_eyebrow}</span>
-              <h2>{d.about.lead_title}</h2>
-              <p className="sub" dangerouslySetInnerHTML={{ __html: d.about.lead_sub_html }} />
-            </div>
-            <LeadForm locale={locale} />
           </div>
         </div>
       </section>

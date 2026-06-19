@@ -178,7 +178,7 @@ export function CtaBanner({
   }
 
   return (
-    <section className="cta-banner">
+    <section className="cta-banner" id="contact">
       <div className="cta-deco cta-deco-1"></div>
       <div className="cta-deco cta-deco-2"></div>
       <div className="cta-deco cta-deco-3"></div>

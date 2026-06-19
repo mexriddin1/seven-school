@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import type { ReactNode } from 'react';
 import type { Locale } from '@/i18n/config';
 import { isLocale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
@@ -69,7 +70,31 @@ export default async function HomePage({ params }: { params: { locale: string } 
   return HomeContent({ params });
 }
 
-type HomeVariant = 'default' | 'short-landing';
+type HomeVariant = 'default' | 'short-landing' | 'long-landing';
+
+function ContactAction({
+  isLanding,
+  className,
+  children,
+}: {
+  isLanding: boolean;
+  className: string;
+  children: ReactNode;
+}) {
+  if (isLanding) {
+    return (
+      <a href="#contact" className={className} data-popup-skip="true">
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <button type="button" className={className} data-popup-open>
+      {children}
+    </button>
+  );
+}
 
 export async function HomeContent({
   params,
@@ -83,6 +108,7 @@ export async function HomeContent({
   const d = getDict(locale);
   const bundle = await fetchSiteBundle(locale);
   const isShortLanding = variant === 'short-landing';
+  const isLanding = variant !== 'default';
   const s = bundle.settings || {};
 
   const heroSlides = bundle.carousel
@@ -141,9 +167,9 @@ export async function HomeContent({
           </h1>
           <p className="lead">{d.home.lead}</p>
           <div className="hero-actions">
-            <button type="button" className="btn btn-primary btn-lg" data-popup-open>
+            <ContactAction isLanding={isLanding} className="btn btn-primary btn-lg">
               {d.home.cta_primary}
-            </button>
+            </ContactAction>
             <a href="#ecosystem" className="btn btn-ghost" data-popup-skip="true">
               {d.home.cta_secondary}
             </a>
@@ -229,7 +255,7 @@ export async function HomeContent({
           </div>
         </div>
         <div className="container">
-          <TogarakCarousel items={togaraks.map((t) => ({ title: t.title }))} />
+          <TogarakCarousel items={togaraks} />
         </div>
       </section>
 
@@ -261,9 +287,9 @@ export async function HomeContent({
               })}
             </div>
             <div className="price-cta">
-              <button type="button" className="btn btn-primary btn-lg" data-popup-open>
+              <ContactAction isLanding={isLanding} className="btn btn-primary btn-lg">
                 {d.home.pricing_cta}
-              </button>
+              </ContactAction>
             </div>
           </div>
         </div>
@@ -358,9 +384,9 @@ export async function HomeContent({
           </div>
           <div className="disclaimer" role="status">
             <div className="text">{d.home.parents_disclaimer}</div>
-            <button type="button" className="btn btn-primary" data-popup-open>
+            <ContactAction isLanding={isLanding} className="btn btn-primary">
               {d.home.parents_cta}
-            </button>
+            </ContactAction>
           </div>
         </div>
       </section>
@@ -370,9 +396,9 @@ export async function HomeContent({
         <div className="container">
           <h2>{d.home.cta_h2}</h2>
           <p dangerouslySetInnerHTML={{ __html: d.home.cta_p_html }} />
-          <button type="button" className="btn btn-primary btn-lg" data-popup-open>
+          <ContactAction isLanding={isLanding} className="btn btn-primary btn-lg">
             {d.home.cta_btn}
-          </button>
+          </ContactAction>
           <p className="cta-note">{d.home.cta_note}</p>
         </div>
       </section>

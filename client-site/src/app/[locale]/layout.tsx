@@ -5,6 +5,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { PopupForm } from '@/components/PopupForm';
 import { UtmCapture } from '@/components/UtmCapture';
+import { GlobalContactSection } from '@/components/GlobalContactSection';
 import { fetchSiteBundle } from '@/lib/api';
 
 export function generateStaticParams() {
@@ -36,6 +37,7 @@ export default async function LocaleLayout({
       <UtmCapture />
       <Header locale={locale} settings={settings} />
       {children}
+      <GlobalContactSection locale={locale} settings={settings} />
       <Footer locale={locale} settings={settings} />
       <PopupForm locale={locale} />
     </>

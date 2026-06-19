@@ -37,8 +37,8 @@ export function PopupForm({ locale }: Props) {
       if (href.startsWith('#') || href.startsWith('tel:') || href.startsWith('mailto:')) return;
 
       if (isLanding) {
-        const ctaTarget = document.querySelector('.cta-banner, .cta-section');
-        if (ctaTarget) {
+        const ctaTarget = document.querySelector('.cta-banner');
+        if (ctaTarget && !trigger.closest('.cta-banner')) {
           e.preventDefault();
           ctaTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
           return;

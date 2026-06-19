@@ -78,7 +78,8 @@ export function PopupForm({ locale }: Props) {
     } finally {
       form.reset();
       setOpen(false);
-      router.push(`/${locale}/thanks`);
+      const fromShortLanding = pathname?.includes('/short-landing');
+      router.push(`/${locale}/thanks${fromShortLanding ? '?tg=short-site' : ''}`);
     }
   }
 

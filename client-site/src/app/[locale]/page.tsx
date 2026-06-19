@@ -84,6 +84,7 @@ export async function HomeContent({
   const d = getDict(locale);
   const bundle = await fetchSiteBundle(locale);
   const isShortLanding = variant === 'short-landing';
+  const s = bundle.settings || {};
 
   const heroSlides = bundle.carousel
     .map((c) => resolveMediaUrl(c.image_url))
@@ -101,6 +102,9 @@ export async function HomeContent({
   const togaraks = (bundle.togaraks || []).length
     ? bundle.togaraks.map((t) => ({ title: t.title, imageUrl: resolveMediaUrl(t.image_url) }))
     : d.home.togarak.map((t) => ({ title: t.title, imageUrl: '' }));
+  const togarakEyebrow = s['home.togarak_eyebrow'] || d.home.togarak_eyebrow;
+  const togarakTitle = s['home.togarak_title'] || d.home.togarak_title;
+  const togarakSub = s['home.togarak_sub'] || d.home.togarak_sub;
 
   const curriculum = (bundle.curriculum_items || []).length
     ? bundle.curriculum_items.map((c) => ({ title: c.title, desc: c.description, imageUrl: resolveMediaUrl(c.image_url) }))
@@ -226,9 +230,9 @@ export async function HomeContent({
       <section className="togarakarlar-carousel" style={{ background: '#fff' }}>
         <div className="container">
           <div className="section-head">
-            <span className="eyebrow">{d.home.togarak_eyebrow}</span>
-            <h2>{d.home.togarak_title}</h2>
-            <p className="sub">{d.home.togarak_sub}</p>
+            <span className="eyebrow">{togarakEyebrow}</span>
+            <h2>{togarakTitle}</h2>
+            <p className="sub">{togarakSub}</p>
           </div>
         </div>
         <div className="container">

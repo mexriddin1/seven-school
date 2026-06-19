@@ -382,70 +382,105 @@ p, li, label, input, textarea, button, a {
 /* ============== ECOSYSTEM (3 cards) ============== */
 .eco-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .eco-card {
-  --eco-bg: #fff;
-  --eco-chip-bg: #fff;
-  --eco-chip-shadow: 0 4px 10px rgba(6,17,60,.06);
-  background: var(--eco-bg);
+  background: #fff;
+  border: 1px solid rgba(6,17,60,.08);
   border-radius: 22px;
-  padding: 26px 26px 22px;
+  padding: 0;
   position: relative; overflow: hidden;
   display: flex; flex-direction: column;
-  min-height: 320px;
-  box-shadow: 0 4px 14px rgba(6,17,60,.05);
-  transition: transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s;
+  min-height: 0;
+  box-shadow: none;
+  transition: transform .3s cubic-bezier(.22,1,.36,1), border-color .3s;
 }
 .eco-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 22px 44px rgba(6,17,60,.1);
+  transform: translateY(-4px);
+  border-color: rgba(6,17,60,.14);
 }
-
-.eco-card--v1 { --eco-bg: #FBEFD7; --eco-chip-bg: #FFF7E4; }
-.eco-card--v2 { --eco-bg: #E4EEF8; --eco-chip-bg: #EFF5FB; }
-.eco-card--v3 { --eco-bg: #ECE9E2; --eco-chip-bg: #F4F1EB; }
 
 .eco-card__body {
-  display: grid; grid-template-columns: 1fr 44%; gap: 12px;
-  align-items: stretch; flex: 1;
+  display: flex; flex-direction: column;
+  gap: 0; align-items: stretch; flex: 1;
 }
-.eco-card__text { display: flex; flex-direction: column; }
+.eco-card__text {
+  display: flex; flex-direction: column;
+  padding: 22px 24px 18px;
+}
 .eco-card__illu {
-  position: relative; min-height: 160px;
+  position: relative;
+  height: 270px;
+  min-height: 0;
+  overflow: hidden;
+  background: #f4f6fb;
 }
+.eco-card__illu img,
 .eco-card__illu svg {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: contain;
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  max-width: none; max-height: none;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
 }
+.eco-card--v1 .eco-card__illu img { object-position: 72% 38%; }
+.eco-card--v2 .eco-card__illu img { object-position: 50% 35%; }
+.eco-card--v3 .eco-card__illu img { object-position: 50% 38%; }
 
 .eco-step {
-  font-size: .78rem; letter-spacing: .12em;
-  color: var(--orange); font-weight: 700; margin-bottom: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: fit-content;
+  background: #FF8A32;
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: .72rem; letter-spacing: .12em;
+  font-weight: 800; margin: 0 0 14px;
+  text-transform: uppercase;
 }
+.eco-card--v2 .eco-step { background: #3F86D4; }
+.eco-card--v3 .eco-step { background: #06113C; }
+
 .eco-card h3 {
   text-transform: uppercase; margin-bottom: 6px;
-  font-size: 1.1rem; color: var(--navy); letter-spacing: .02em;
+  font-size: 1.08rem; color: var(--navy); letter-spacing: .02em;
+  line-height: 1.25;
 }
-.eco-age { font-size: .82rem; color: var(--orange); font-weight: 600; margin-bottom: 14px; }
+.eco-age {
+  width: fit-content;
+  font-size: .8rem; color: var(--orange); font-weight: 700;
+  margin-bottom: 12px;
+  border: 1.5px solid #FF8A32;
+  border-radius: 4px;
+  padding: 4px 11px;
+}
+.eco-card--v2 .eco-age { color: #3F86D4; border-color: #3F86D4; }
+.eco-card--v3 .eco-age { color: #06113C; border-color: #06113C; }
 .eco-card p {
   font-size: .9rem; color: rgba(6,17,60,.72); line-height: 1.6;
-  max-width: 22ch;
+  max-width: none;
 }
 
 .eco-card__icons {
-  display: flex; gap: 10px; margin-top: 18px;
+  display: flex; gap: 8px;
+  padding: 0 24px 22px;
+  margin-top: auto;
 }
 .eco-chip {
-  width: 42px; height: 42px;
+  width: 38px; height: 38px;
   display: inline-flex; align-items: center; justify-content: center;
-  background: var(--eco-chip-bg);
-  border-radius: 11px;
-  box-shadow: var(--eco-chip-shadow);
+  background: #f4f6fb;
+  border: 1px solid rgba(6,17,60,.08);
+  border-radius: 8px;
+  box-shadow: none;
   flex: 0 0 auto;
 }
-.eco-chip svg { width: 22px; height: 22px; display: block; }
+.eco-card--v1 .eco-chip:hover { background: #FFE7D2; }
+.eco-card--v2 .eco-chip:hover { background: #DCE9F7; }
+.eco-card--v3 .eco-chip:hover { background: #DADCE4; }
+.eco-chip svg { width: 20px; height: 20px; display: block; }
 
 @media (max-width: 1024px) {
-  .eco-card__body { grid-template-columns: 1fr 38%; }
   .eco-card p { max-width: none; }
+  .eco-card__illu { height: 240px; }
 }
 
 /* ============== FEATURES (Seven Kids 2x2 + carousel) ============== */
@@ -1966,9 +2001,11 @@ body.popup-open { overflow: hidden; }
 }
 @media (max-width: 880px) {
   .eco-grid, .features-grid { grid-template-columns: 1fr; }
-  .eco-card { min-height: 0; padding: 24px; }
-  .eco-card__body { grid-template-columns: 1fr 40%; }
-  .eco-card__illu { min-height: 140px; }
+  .eco-card { min-height: 0; padding: 0; }
+  .eco-card__body { flex-direction: column; }
+  .eco-card__illu { height: 250px; min-height: 0; }
+  .eco-card__text { padding: 20px 20px 16px; }
+  .eco-card__icons { padding: 0 20px 20px; }
   .schedule-grid { grid-template-columns: repeat(2, 1fr); }
   .schedule-extra { grid-column: span 2; }
   .footer-inner { flex-direction: column; gap: 36px; }

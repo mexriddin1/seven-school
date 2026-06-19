@@ -5,20 +5,20 @@ const photoStyle: React.CSSProperties = {
   inset: 0,
   width: '100%',
   height: '100%',
-  objectFit: 'contain',
+  objectFit: 'cover',
   objectPosition: 'center',
 };
 
 export function EcoIllu1() {
-  return <img src="/eco/little.png" alt="" style={photoStyle} loading="lazy" />;
+  return <img src="/eco/kid.jpg" alt="" style={photoStyle} loading="lazy" />;
 }
 
 export function EcoIllu2() {
-  return <img src="/eco/middle.png" alt="" style={photoStyle} loading="lazy" />;
+  return <img src="/eco/middle.jpg" alt="" style={photoStyle} loading="lazy" />;
 }
 
 export function EcoIllu3() {
-  return <img src="/eco/hight.png" alt="" style={photoStyle} loading="lazy" />;
+  return <img src="/eco/high.jpg" alt="" style={photoStyle} loading="lazy" />;
 }
 
 /* ============ chip icons ============ */

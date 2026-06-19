@@ -4,6 +4,7 @@ import { LocaleSetter } from '@/components/LocaleSetter';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { PopupForm } from '@/components/PopupForm';
+import { UtmCapture } from '@/components/UtmCapture';
 import { fetchSiteBundle } from '@/lib/api';
 
 export function generateStaticParams() {
@@ -32,6 +33,7 @@ export default async function LocaleLayout({
   return (
     <>
       <LocaleSetter locale={locale} />
+      <UtmCapture />
       <Header locale={locale} settings={settings} />
       {children}
       <Footer locale={locale} settings={settings} />

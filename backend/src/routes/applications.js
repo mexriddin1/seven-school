@@ -8,6 +8,16 @@ import { dispatchEvent } from '../services/webhook-dispatcher.js';
 
 const router = Router();
 
+const utmSchema = {
+  utm_source: z.string().max(120).nullable().optional(),
+  utm_medium: z.string().max(120).nullable().optional(),
+  utm_campaign: z.string().max(120).nullable().optional(),
+  utm_term: z.string().max(120).nullable().optional(),
+  utm_content: z.string().max(120).nullable().optional(),
+  referrer: z.string().max(500).nullable().optional(),
+  landing_page: z.string().max(500).nullable().optional(),
+};
+
 const submitSchema = z.object({
   name: z.string().min(1).max(150),
   phone: z.string().min(4).max(40),
@@ -16,15 +26,33 @@ const submitSchema = z.object({
   grade: z.string().max(20).nullable().optional(),
   region: z.string().max(120).nullable().optional(),
   source_form: z.string().max(60).optional(),
+  ...utmSchema,
 });
 
 // Public: form submission
 router.post('/', async (req, res) => {
   const b = submitSchema.parse(req.body);
   const result = await query(
-    `INSERT INTO application_submissions (source_form, name, phone, message, age, grade, region, status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, 'new')`,
-    [b.source_form ?? 'contact', b.name, b.phone, b.message ?? null, b.age ?? null, b.grade ?? null, b.region ?? null],
+    `INSERT INTO application_submissions
+      (source_form, name, phone, message, age, grade, region,
+       utm_source, utm_medium, utm_campaign, utm_term, utm_content, referrer, landing_page, status)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')`,
+    [
+      b.source_form ?? 'contact',
+      b.name,
+      b.phone,
+      b.message ?? null,
+      b.age ?? null,
+      b.grade ?? null,
+      b.region ?? null,
+      b.utm_source ?? null,
+      b.utm_medium ?? null,
+      b.utm_campaign ?? null,
+      b.utm_term ?? null,
+      b.utm_content ?? null,
+      b.referrer ?? null,
+      b.landing_page ?? null,
+    ],
   );
   const leadPayload = {
     ...b,

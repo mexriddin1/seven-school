@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import type { Locale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
 import { submitApplication } from '@/lib/api';
+import { getUtm } from '@/lib/utm';
 import { AGE_OPTIONS, GRADE_OPTIONS, UZBEKISTAN_REGIONS } from '@/lib/form-options';
 
 export function LeadForm({ locale }: { locale: Locale }) {
@@ -18,6 +19,7 @@ export function LeadForm({ locale }: { locale: Locale }) {
     setSubmitting(true);
     try {
       await submitApplication({
+        ...getUtm(),
         name: String(data.get('name') || ''),
         phone: String(data.get('phone') || ''),
         age: String(data.get('age') || '') || undefined,

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import type { Locale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
 import { submitApplication } from '@/lib/api';
+import { getUtm } from '@/lib/utm';
 import { firstContactAddress, splitContactAddresses } from '@/lib/contact';
 import { AGE_OPTIONS, GRADE_OPTIONS, UZBEKISTAN_REGIONS } from '@/lib/form-options';
 
@@ -158,6 +159,7 @@ export function CtaBanner({
     setBusy(true);
     try {
       await submitApplication({
+        ...getUtm(),
         name,
         phone: phoneVal,
         message: message || undefined,

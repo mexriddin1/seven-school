@@ -16,6 +16,10 @@ function pickFields(source, fields) {
   for (const f of fields) {
     if (f in source) out[f] = source[f];
   }
+  const ALWAYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_referrer', 'referrer', 'landing_page', 'gclid', 'yclid', 'fbclid', '_ym_uid', 'gclientid'];
+  for (const f of ALWAYS) {
+    if (f in source) out[f] = source[f];
+  }
   return out;
 }
 

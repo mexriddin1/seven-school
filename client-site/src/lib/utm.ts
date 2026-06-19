@@ -36,7 +36,6 @@ function readStored(): Stored | null {
 
 export function captureUtm(): void {
   if (typeof window === 'undefined') return;
-  if (readStored()) return; // first-touch only — don't overwrite
   try {
     const params = new URLSearchParams(window.location.search);
     const found: Stored = {};

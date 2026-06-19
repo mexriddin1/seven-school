@@ -40,7 +40,8 @@ export default async function ThanksPage({ params }: { params: { locale: string 
     settings = {};
   }
   const phone = settings['contact.phone'] || '+998 78 888 80 80';
-  const phoneLink = settings['contact.phone_link'] || phone.replace(/\D/g, '');
+  const rawPhoneLink = (settings['contact.phone_link'] || phone).trim();
+  const phoneLink = `${rawPhoneLink.startsWith('+') ? '+' : ''}${rawPhoneLink.replace(/\D/g, '')}`;
 
   return (
     <>

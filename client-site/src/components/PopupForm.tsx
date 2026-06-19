@@ -79,6 +79,9 @@ export function PopupForm({ locale }: Props) {
       form.reset();
       setOpen(false);
       const fromShortLanding = pathname?.includes('/short-landing');
+      if (fromShortLanding && typeof window !== 'undefined') {
+        window.sessionStorage.setItem('telegramLead', 'short-site');
+      }
       router.push(`/${locale}/thanks${fromShortLanding ? '?tg=short-site' : ''}`);
     }
   }

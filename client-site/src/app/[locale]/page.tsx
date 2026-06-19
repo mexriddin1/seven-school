@@ -138,9 +138,15 @@ export async function HomeContent({
           </h1>
           <p className="lead">{d.home.lead}</p>
           <div className="hero-actions">
-            <Link href={`/${locale}/aloqa`} className="btn btn-primary btn-lg">
-              {d.home.cta_primary}
-            </Link>
+            {isShortLanding ? (
+              <button type="button" className="btn btn-primary btn-lg" data-popup-open>
+                {d.home.cta_primary}
+              </button>
+            ) : (
+              <Link href={`/${locale}/aloqa`} className="btn btn-primary btn-lg">
+                {d.home.cta_primary}
+              </Link>
+            )}
             <a href="#ecosystem" className="btn btn-ghost" data-popup-skip="true">
               {d.home.cta_secondary}
             </a>
@@ -258,9 +264,15 @@ export async function HomeContent({
               })}
             </div>
             <div className="price-cta">
-              <Link href={`/${locale}/aloqa`} className="btn btn-primary btn-lg">
-                {d.home.pricing_cta}
-              </Link>
+              {isShortLanding ? (
+                <button type="button" className="btn btn-primary btn-lg" data-popup-open>
+                  {d.home.pricing_cta}
+                </button>
+              ) : (
+                <Link href={`/${locale}/aloqa`} className="btn btn-primary btn-lg">
+                  {d.home.pricing_cta}
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -355,7 +367,13 @@ export async function HomeContent({
           </div>
           <div className="disclaimer" role="status">
             <div className="text">{d.home.parents_disclaimer}</div>
-            <Link href={`/${locale}/aloqa`} className="btn btn-primary">{d.home.parents_cta}</Link>
+            {isShortLanding ? (
+              <button type="button" className="btn btn-primary" data-popup-open>
+                {d.home.parents_cta}
+              </button>
+            ) : (
+              <Link href={`/${locale}/aloqa`} className="btn btn-primary">{d.home.parents_cta}</Link>
+            )}
           </div>
         </div>
       </section>
@@ -365,7 +383,13 @@ export async function HomeContent({
         <div className="container">
           <h2>{d.home.cta_h2}</h2>
           <p dangerouslySetInnerHTML={{ __html: d.home.cta_p_html }} />
-          <Link href={`/${locale}/aloqa`} className="btn btn-primary btn-lg">{d.home.cta_btn}</Link>
+          {isShortLanding ? (
+            <button type="button" className="btn btn-primary btn-lg" data-popup-open>
+              {d.home.cta_btn}
+            </button>
+          ) : (
+            <Link href={`/${locale}/aloqa`} className="btn btn-primary btn-lg">{d.home.cta_btn}</Link>
+          )}
           <p className="cta-note">{d.home.cta_note}</p>
         </div>
       </section>

@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useDeferredValue, useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { Locale } from '@/i18n/config';
 import { getDict } from '@/i18n/dictionaries';
@@ -13,9 +13,10 @@ type Post = {
 export function BlogList({ locale, posts }: { locale: Locale; posts: Post[] }) {
   const d = getDict(locale).blog;
   const [q, setQ] = useState('');
+  const deferredQuery = useDeferredValue(q);
 
   const filtered = useMemo(() => {
-    const needle = q.trim().toLowerCase();
+    const needle = deferredQuery.trim().toLowerCase();
     if (!needle) return posts;
     return posts.filter((p) => {
       return (
@@ -24,7 +25,7 @@ export function BlogList({ locale, posts }: { locale: Locale; posts: Post[] }) {
         (p.badge || '').toLowerCase().includes(needle)
       );
     });
-  }, [q, posts]);
+  }, [deferredQuery, posts]);
 
   const placeholder =
     locale === 'ru' ? 'Поиск по статьям...' :

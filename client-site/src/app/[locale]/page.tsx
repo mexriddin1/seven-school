@@ -375,6 +375,7 @@ export async function HomeContent({
                   <iframe
                     src={src}
                     title={`Parent video ${i + 1}`}
+                    loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />

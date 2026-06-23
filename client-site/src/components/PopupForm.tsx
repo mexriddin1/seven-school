@@ -40,16 +40,20 @@ export function PopupForm({ locale }: Props) {
       e.preventDefault();
       setOpen(true);
     }
+    document.addEventListener('click', onClick);
+    return () => {
+      document.removeEventListener('click', onClick);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') close();
     }
-    document.addEventListener('click', onClick);
     document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('click', onClick);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, [close]);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [close, open]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

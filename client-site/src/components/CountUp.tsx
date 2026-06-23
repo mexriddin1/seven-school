@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 type Props = {
   value: string;
@@ -18,10 +18,9 @@ function parseNumeric(s: string): { prefix: string; num: number; suffix: string 
 }
 
 export function CountUp({ value, duration = 1500, className }: Props) {
-  const parsed = parseNumeric(value);
+  const parsed = useMemo(() => parseNumeric(value), [value]);
   const target = parsed?.num ?? 0;
   const decimals = parsed && String(parsed.num).includes('.') ? (String(parsed.num).split('.')[1]?.length || 0) : 0;
-  const [current, setCurrent] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const startedRef = useRef(false);
 
@@ -29,6 +28,14 @@ export function CountUp({ value, duration = 1500, className }: Props) {
     if (!parsed) return;
     const el = ref.current;
     if (!el) return;
+    const format = (n: number) => `${parsed.prefix}${decimals ? n.toFixed(decimals) : Math.round(n).toString()}${parsed.suffix}`;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      el.textContent = format(target);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -38,9 +45,9 @@ export function CountUp({ value, duration = 1500, className }: Props) {
             const tick = (now: number) => {
               const t = Math.min((now - start) / duration, 1);
               const eased = 1 - Math.pow(1 - t, 3);
-              setCurrent(target * eased);
+              el.textContent = format(target * eased);
               if (t < 1) requestAnimationFrame(tick);
-              else setCurrent(target);
+              else el.textContent = format(target);
             };
             requestAnimationFrame(tick);
             observer.disconnect();
@@ -52,14 +59,13 @@ export function CountUp({ value, duration = 1500, className }: Props) {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [target, duration, parsed]);
+  }, [target, duration, parsed, decimals]);
 
   if (!parsed) return <span ref={ref} className={className}>{value}</span>;
 
-  const display = decimals ? current.toFixed(decimals) : Math.round(current).toString();
   return (
     <span ref={ref} className={className}>
-      {parsed.prefix}{display}{parsed.suffix}
+      {parsed.prefix}0{parsed.suffix}
     </span>
   );
 }

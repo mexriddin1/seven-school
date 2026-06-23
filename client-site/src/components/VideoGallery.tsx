@@ -33,12 +33,13 @@ export function VideoGallery({ items }: { items: VideoItem[] }) {
   }, [activeIndex]);
 
   useEffect(() => {
+    if (activeIndex === null) return;
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') setActiveIndex(null);
     }
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, []);
+  }, [activeIndex]);
 
   return (
     <>

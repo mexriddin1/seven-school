@@ -37,6 +37,7 @@ export type Dict = {
   // ============== HOME ==============
   home: {
     pill: string;
+    city_pill: string;
     title_line1: string;
     title_line2_pre: string;
     title_line2_accent: string;
@@ -64,6 +65,9 @@ export type Dict = {
     pricing_title: string;
     pricing_sub: string;
     pricing_cta: string;
+    // Both are rendered only when the backend has fewer than 3 published pricing plans.
+    pricing_currency: string;
+    pricing_fallback: Array<{ label: string; note: string; includes: string }>;
 
     curriculum_eyebrow: string;
     curriculum_title: string;
@@ -206,6 +210,7 @@ const uz: Dict = {
 
   home: {
     pill: '2025–2026 qabul davom etmoqda',
+    city_pill: 'Toshkent',
     title_line1: 'Farzandingiz hozir',
     title_line2_pre: 'nechchi',
     title_line2_accent: "yoshda?",
@@ -251,6 +256,24 @@ const uz: Dict = {
     pricing_title: "Narx — Shaffof narx. Yashirin to'lovlarsiz.",
     pricing_sub: "Har bir narxga barcha mashg'ulotlar, ovqatlanish va to'garaklar kiradi.",
     pricing_cta: 'Sinov darsiga yozilish',
+    pricing_currency: "so'm/oy",
+    pricing_fallback: [
+      {
+        label: '2–6 yosh',
+        note: "Bog'cha guruhi",
+        includes: "Barcha mashg'ulotlar|Nonushta va tushlik|Tolmachoy|Ota-ona ilovasi",
+      },
+      {
+        label: 'Pre-School',
+        note: 'Tayyorlov guruhi',
+        includes: "Barcha mashg'ulotlar|Nonushta va tushlik|Tolmachoy|Ota-ona ilovasi",
+      },
+      {
+        label: '1–4-sinf',
+        note: "Natijador o'quvchilar uchun stipendiya mavjud.",
+        includes: "Barcha fanlar|3 ta sport mashg'uloti|4 mahal ovqat|Mentor va Tutor tizimi|Ota-ona ilovasi",
+      },
+    ],
 
     curriculum_eyebrow: 'Seven School · 1–4 sinf',
     curriculum_title: "Boshlang'ich sinf — keyingi 11 yilning poydevori.",
@@ -433,6 +456,7 @@ const ru: Dict = {
 
   home: {
     pill: 'Приём 2025–2026 открыт',
+    city_pill: 'Ташкент',
     title_line1: 'Сколько лет',
     title_line2_pre: 'вашему',
     title_line2_accent: 'ребёнку?',
@@ -478,6 +502,24 @@ const ru: Dict = {
     pricing_title: 'Цена — прозрачная. Без скрытых платежей.',
     pricing_sub: 'В каждую цену включены все занятия, питание и кружки.',
     pricing_cta: 'Записаться на пробный урок',
+    pricing_currency: 'сум/мес',
+    pricing_fallback: [
+      {
+        label: '2–6 лет',
+        note: 'Детсадовская группа',
+        includes: 'Все занятия|Завтрак и обед|Полдник|Приложение для родителей',
+      },
+      {
+        label: 'Pre-School',
+        note: 'Подготовительная группа',
+        includes: 'Все занятия|Завтрак и обед|Полдник|Приложение для родителей',
+      },
+      {
+        label: '1–4 класс',
+        note: 'Для успешных учеников предусмотрена стипендия.',
+        includes: 'Все предметы|3 спортивных занятия|4-разовое питание|Система менторов и тьюторов|Приложение для родителей',
+      },
+    ],
 
     curriculum_eyebrow: 'Seven School · 1–4 класс',
     curriculum_title: 'Начальная школа — фундамент следующих 11 лет.',
@@ -660,6 +702,7 @@ const en: Dict = {
 
   home: {
     pill: '2025–2026 admissions open',
+    city_pill: 'Tashkent',
     title_line1: 'How old is',
     title_line2_pre: 'your',
     title_line2_accent: 'child?',
@@ -705,6 +748,24 @@ const en: Dict = {
     pricing_title: 'Transparent pricing. No hidden fees.',
     pricing_sub: 'Every price includes all classes, meals and clubs.',
     pricing_cta: 'Book a trial lesson',
+    pricing_currency: 'UZS/month',
+    pricing_fallback: [
+      {
+        label: 'Ages 2–6',
+        note: 'Kindergarten group',
+        includes: 'All classes|Breakfast and lunch|Afternoon snack|Parent app',
+      },
+      {
+        label: 'Pre-School',
+        note: 'Preparatory group',
+        includes: 'All classes|Breakfast and lunch|Afternoon snack|Parent app',
+      },
+      {
+        label: 'Grades 1–4',
+        note: 'Scholarships available for high-achieving students.',
+        includes: 'All subjects|3 sports sessions|4 meals a day|Mentor and tutor system|Parent app',
+      },
+    ],
 
     curriculum_eyebrow: 'Seven School · Grades 1–4',
     curriculum_title: 'Primary school — the foundation for the next 11 years.',

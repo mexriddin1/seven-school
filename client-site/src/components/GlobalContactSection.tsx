@@ -18,5 +18,14 @@ export function GlobalContactSection({
     return null;
   }
 
-  return <CtaBanner locale={locale} settings={settings} />;
+  const isShortLanding = Boolean(pathname?.startsWith(`/${locale}/short-landing`));
+
+  return (
+    <CtaBanner
+      locale={locale}
+      settings={settings}
+      showMap={!isShortLanding}
+      formFirst={isShortLanding}
+    />
+  );
 }

@@ -33,44 +33,25 @@ const KIDS_IMAGES = [
   "https://images.unsplash.com/photo-1552664730-d307ca884978?w=480&h=320&fit=crop",
 ];
 
-const FALLBACK_PLANS = (d: ReturnType<typeof getDict>) => [
-  {
-    id: 0,
-    amount: "3 990 000",
-    currency: "so'm/oy",
-    is_featured: 0,
-    sort_order: 0,
-    label: d.home.eco[0].age,
-    includes:
-      "Barcha mashg'ulotlar|Nonushta va tushlik|Tolmachoy|Ota-ona ilovasi",
-    note: "Bog'cha guruhi",
-    cta_label: d.home.pricing_cta,
-  },
-  {
-    id: 1,
-    amount: "4 590 000",
-    currency: "so'm/oy",
-    is_featured: 1,
-    sort_order: 1,
-    label: "Pre-School",
-    includes:
-      "Barcha mashg'ulotlar|Nonushta va tushlik|Tolmachoy|Ota-ona ilovasi",
-    note: "Tayyorlov guruhi",
-    cta_label: d.home.pricing_cta,
-  },
-  {
-    id: 2,
-    amount: "5 590 000",
-    currency: "so'm/oy",
-    is_featured: 0,
-    sort_order: 2,
-    label: "1–4-sinf",
-    includes:
-      "Barcha fanlar|3 ta sport mashg'uloti|4 mahal ovqat|Mentor va Tutor tizimi|Ota-ona ilovasi",
-    note: "Natijador o'quvchilar uchun stipendiya mavjud.",
-    cta_label: d.home.pricing_cta,
-  },
+// Amounts stay here (they are not language-dependent); every string comes from the dict.
+const FALLBACK_PLAN_AMOUNTS = [
+  { amount: "3 990 000", is_featured: 0 },
+  { amount: "4 590 000", is_featured: 1 },
+  { amount: "5 590 000", is_featured: 0 },
 ];
+
+const FALLBACK_PLANS = (d: ReturnType<typeof getDict>) =>
+  FALLBACK_PLAN_AMOUNTS.map((plan, i) => ({
+    id: i,
+    amount: plan.amount,
+    currency: d.home.pricing_currency,
+    is_featured: plan.is_featured,
+    sort_order: i,
+    label: d.home.pricing_fallback[i].label,
+    includes: d.home.pricing_fallback[i].includes,
+    note: d.home.pricing_fallback[i].note,
+    cta_label: d.home.pricing_cta,
+  }));
 
 const DEFAULT_PARENT_VIDEOS = [
   "https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&controls=1",
@@ -184,15 +165,15 @@ export default async function HomePage({
 type HomeVariant = "default" | "short-landing" | "long-landing";
 
 function ContactAction({
-  isLanding,
+  asAnchor,
   className,
   children,
 }: {
-  isLanding: boolean;
+  asAnchor: boolean;
   className: string;
   children: ReactNode;
 }) {
-  if (isLanding) {
+  if (asAnchor) {
     return (
       <a href="#contact" className={className} data-popup-skip="true">
         {children}
@@ -220,6 +201,8 @@ export async function HomeContent({
   const bundle = await fetchSiteBundle(locale);
   const isShortLanding = variant === "short-landing";
   const isLanding = variant !== "default";
+  // Short-landing opens the popup instead of scrolling to #contact; long-landing keeps the anchor.
+  const asAnchor = isLanding && !isShortLanding;
   const s = bundle.settings || {};
 
   const heroSlides = bundle.carousel
@@ -301,6 +284,11 @@ export async function HomeContent({
       <section className="hero">
         <HeroCarousel slides={heroSlides} />
         <div className="container hero-inner">
+          {isShortLanding && (
+            <div className="hero-city">
+              <span className="pill pill--city">{d.home.city_pill}</span>
+            </div>
+          )}
           <div className="pill">
             <span className="dot" />
             {d.home.pill}
@@ -313,19 +301,18 @@ export async function HomeContent({
           </h1>
           <p className="lead">{d.home.lead}</p>
           <div className="hero-actions">
-            <ContactAction
-              isLanding={isLanding}
-              className="btn btn-primary btn-lg"
-            >
+            <ContactAction asAnchor={asAnchor} className="btn btn-primary btn-lg">
               {d.home.cta_primary}
             </ContactAction>
-            <a
-              href="#ecosystem"
-              className="btn btn-ghost"
-              data-popup-skip="true"
-            >
-              {d.home.cta_secondary}
-            </a>
+            {!isShortLanding && (
+              <a
+                href="#ecosystem"
+                className="btn btn-ghost"
+                data-popup-skip="true"
+              >
+                {d.home.cta_secondary}
+              </a>
+            )}
           </div>
           <div className="hero-stats">
             {d.home.stats.map((st, i) => (
@@ -380,6 +367,16 @@ export async function HomeContent({
               </div>
             ))}
           </div>
+          {isShortLanding && (
+            <div className="section-cta">
+              <ContactAction
+                asAnchor={asAnchor}
+                className="btn btn-primary btn-lg"
+              >
+                {d.home.cta_primary}
+              </ContactAction>
+            </div>
+          )}
         </div>
       </section>
 
@@ -461,8 +458,10 @@ export async function HomeContent({
             </div>
             <div className="price-cta">
               <ContactAction
-                isLanding={isLanding}
-                className="btn btn-primary btn-lg"
+                asAnchor={asAnchor}
+                className={
+                  "btn btn-primary btn-lg" + (isShortLanding ? " btn-pulse" : "")
+                }
               >
                 {d.home.pricing_cta}
               </ContactAction>
@@ -510,6 +509,16 @@ export async function HomeContent({
               </div>
             ))}
           </div>
+          {isShortLanding && (
+            <div className="section-cta">
+              <ContactAction
+                asAnchor={asAnchor}
+                className="btn btn-primary btn-lg"
+              >
+                {d.home.cta_primary}
+              </ContactAction>
+            </div>
+          )}
         </div>
       </section>
 
@@ -575,7 +584,7 @@ export async function HomeContent({
           </div>
           <div className="disclaimer" role="status">
             <div className="text">{d.home.parents_disclaimer}</div>
-            <ContactAction isLanding={isLanding} className="btn btn-primary">
+            <ContactAction asAnchor={asAnchor} className="btn btn-primary">
               {d.home.parents_cta}
             </ContactAction>
           </div>
@@ -583,19 +592,18 @@ export async function HomeContent({
       </section>
 
       {/* ============== CTA ============== */}
-      <section className="cta-section">
-        <div className="container">
-          <h2>{d.home.cta_h2}</h2>
-          <p dangerouslySetInnerHTML={{ __html: d.home.cta_p_html }} />
-          <ContactAction
-            isLanding={isLanding}
-            className="btn btn-primary btn-lg"
-          >
-            {d.home.cta_btn}
-          </ContactAction>
-          <p className="cta-note">{d.home.cta_note}</p>
-        </div>
-      </section>
+      {!isShortLanding && (
+        <section className="cta-section">
+          <div className="container">
+            <h2>{d.home.cta_h2}</h2>
+            <p dangerouslySetInnerHTML={{ __html: d.home.cta_p_html }} />
+            <ContactAction asAnchor={asAnchor} className="btn btn-primary btn-lg">
+              {d.home.cta_btn}
+            </ContactAction>
+            <p className="cta-note">{d.home.cta_note}</p>
+          </div>
+        </section>
+      )}
     </>
   );
 }
